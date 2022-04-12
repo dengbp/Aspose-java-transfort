@@ -1,0 +1,41 @@
+server:
+  servlet:
+    context-path:  /docapp
+  port: 8889
+  tomcat:
+    uri-encoding: utf-8
+
+spring:
+  profiles:
+    active: @profileActive@
+
+  application:
+    name: view-web
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  aop:
+    proxy-target-class: true
+
+  mvc:
+    pathmatch:
+      matching:
+        strategy: ant-path-matcher
+
+mybatis-plus:
+  # 实体类扫描路径
+  type-aliases-package: com.yrnet.viewweb.business.entity,com.yrnet.viewweb.business.login.entity,com.yrnet.viewweb.system.entity
+  # xml 扫描路径
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8901/eureka/
+
