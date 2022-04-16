@@ -1,5 +1,5 @@
 #! /bin/sh
-name="yr-yinxx-1.0.0"
+name="view-web-0.0.1"
 pid=${name}".pid"
 echo -n "stop $name ..."
 if [ -f "$pid" ]

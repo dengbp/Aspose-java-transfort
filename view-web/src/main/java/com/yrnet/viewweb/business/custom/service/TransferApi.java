@@ -12,6 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "services-transfer")
 public interface TransferApi {
 
-    @RequestMapping(value = "sample/hello")
+    @RequestMapping(value = "services-transfer/sample/hello")
     String hello();
 }

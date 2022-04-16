@@ -1,5 +1,5 @@
 #! /bin/sh
-name="yr-yinxx-1.0.0"
+name="view-web-0.0.1"
 Xmx=512m
 Xms=512m
 Xmn=256m
@@ -22,7 +22,7 @@ if [ -f "$pid" ]
     exit 0;
   else
     echo -n  "start ${jarName} ..."
-    nohup java   -Xmx${Xmx} -Xms${Xms} -Xmn${Xmn} -XX:CMSFullGCsBeforeCompaction=3 -XX:CMSInitiatingOccupancyFraction=60 -XX:-OmitStackTraceInFastThrow -Dice.envPath=${iceConfPath} -jar ${jarName} --CONF_DIR=${CONF_DIR}  --spring.config.location=${CONF_DIR}/  --logging.config=${CONF_DIR}/logback-spring.xml >/dev/null 2>&1 &
+    nohup java   -Xmx${Xmx} -Xms${Xms} -Xmn${Xmn} -XX:CMSFullGCsBeforeCompaction=3 -XX:CMSInitiatingOccupancyFraction=60 -XX:-OmitStackTraceInFastThrow -Dice.envPath=${iceConfPath} -jar ${jarName} --CONF_DIR=${CONF_DIR}  --spring.config.location=${CONF_DIR}/  --logging.config=${CONF_DIR}/logback-spring.xml >${DEPLOY_DIR}/logs/${logName}.log 2>&1 &
     [ $? -eq 0 ] && echo   "[ok]"
     echo $! > ${DEPLOY_DIR}/bin/${pid}   # 将jar包启动对应的pid写入文件中，为停止时提供pi
  fi

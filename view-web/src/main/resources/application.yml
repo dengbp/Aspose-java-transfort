@@ -37,5 +37,5 @@ mybatis-plus:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8901/eureka/
+      defaultZone: http://localhost:8901/register-center/eureka/
 

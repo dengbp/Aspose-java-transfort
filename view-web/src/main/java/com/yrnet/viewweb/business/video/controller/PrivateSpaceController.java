@@ -40,7 +40,7 @@ public class PrivateSpaceController {
     @ResponseBody
     @ControllerEndpoint(operation = "用户多媒体上传", exceptionMessage = "用户多媒体上传失败")
     @Log("用户转换文档上传")
-    public ViewWebResponse upload(@RequestParam("file") MultipartFile file, @RequestPart(value="toType",required=true) int toType, @RequestPart(value="openId",required=true) String openId) {
+    public ViewWebResponse upload(@RequestParam("file") MultipartFile file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
         if (file == null) {
             return new ViewWebResponse().fail().message("上传失败，文件为空");
         }

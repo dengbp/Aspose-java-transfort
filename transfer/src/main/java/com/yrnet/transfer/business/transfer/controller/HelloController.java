@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/sample")
-public class SampleController {
+public class HelloController {
 
     @GetMapping("hello")
     @ResponseBody
