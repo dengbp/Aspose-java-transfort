@@ -1,4 +1,4 @@
-package com.yrnet.transfer.business.transfer.file.file2Pdf;
+package com.yrnet.transfer.business.transfer.file.convert;
 
 import com.aspose.cells.PdfSaveOptions;
 import com.aspose.cells.SaveFormat;
@@ -15,21 +15,21 @@ import java.io.FileOutputStream;
  **/
 public class ExcelToPdf {
 
-    public static void excelToPdf(String inPath, String outPath) {
+    public static void excelToPdf(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
             return;
         }
         try {
             long old = System.currentTimeMillis();
-            File pdfFile = new File(outPath);
-            Workbook wb = new Workbook(inPath);
+            File pdfFile = new File(outFile);
+            Workbook wb = new Workbook(inFile);
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.setOnePagePerSheet(true);
             FileOutputStream fileOS = new FileOutputStream(pdfFile);
             wb.save(fileOS, SaveFormat.PDF);
             fileOS.close();
             long now = System.currentTimeMillis();
-            Out.print(inPath, outPath, now, old);
+            Out.print(inFile, outFile, now, old);
         }catch (Exception e) {
             e.printStackTrace();
         }

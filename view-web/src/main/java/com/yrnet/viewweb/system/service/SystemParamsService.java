@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.system.Dto.SystemParamsDto;
 import com.yrnet.viewweb.system.entity.SystemParams;
 import com.yrnet.viewweb.system.mapper.SystemParamsMapper;
@@ -49,7 +49,7 @@ public class SystemParamsService extends ServiceImpl<SystemParamsMapper, SystemP
         return this.baseMapper.selectPage(page,queryWrapper);
     }
 
-    public List<SystemParams> getByParentId(SystemParamsDto request)throws YinXXException {
+    public List<SystemParams> getByParentId(SystemParamsDto request)throws DocumentException {
         LambdaQueryWrapper<SystemParams> queryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(request.getParamName())){
             queryWrapper.eq(SystemParams::getParamName,request.getParamName());

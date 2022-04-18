@@ -5,7 +5,7 @@ import com.yrnet.viewweb.business.bill.dto.PayMentReqDto;
 import com.yrnet.viewweb.business.bill.dto.PaymentLogReqDto;
 import com.yrnet.viewweb.business.bill.dto.PaymentLogRespDto;
 import com.yrnet.viewweb.business.bill.entity.PaymentLog;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,9 +24,9 @@ public interface IPaymentLogService extends IService<PaymentLog> {
      * Description todo
      * @param reqDto
      * @return java.util.List<com.yrnet.viewweb.business.bill.dto.PaymentLogRespDto>
-     * @throws YinXXException
+     * @throws DocumentException
      * @Author dengbp
      * @Date 4:29 PM 2/5/21
      **/
-    List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws YinXXException;
+    List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException;
 }

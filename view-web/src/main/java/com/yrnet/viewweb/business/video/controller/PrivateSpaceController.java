@@ -2,6 +2,7 @@ package com.yrnet.viewweb.business.video.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yrnet.viewweb.business.video.dto.MultipartInfoRequestDto;
+import com.yrnet.viewweb.business.video.dto.ParseLogReqDto;
 import com.yrnet.viewweb.business.video.service.IParseLogService;
 import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.annotation.Log;
@@ -46,6 +47,16 @@ public class PrivateSpaceController {
         }
         return new ViewWebResponse().success().data( parseLogService.saveFile(file,"",openId));
     }
+
+
+    @PostMapping("/log")
+    @ResponseBody
+    @ControllerEndpoint(operation = "去印记录查询", exceptionMessage = "去印记录查询失败")
+    @Log("去印记录查询接口")
+    public ViewWebResponse log(@RequestBody @Valid ParseLogReqDto dto){
+        return new ViewWebResponse().success().data(parseLogService.queryLog(dto));
+    }
+
     /**
      * Description 多媒体上传后发布
      * @return com.yr.net.app.base.dto.RestResult

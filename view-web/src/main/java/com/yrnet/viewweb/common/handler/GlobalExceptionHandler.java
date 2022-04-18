@@ -3,7 +3,7 @@ package com.yrnet.viewweb.common.handler;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.yrnet.viewweb.common.entity.LicenseResponse;
 import com.yrnet.viewweb.common.exception.LimitAccessException;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -39,9 +39,9 @@ public class GlobalExceptionHandler {
         return new LicenseResponse().message("系统内部异常");
     }
 
-    @ExceptionHandler(value = YinXXException.class)
+    @ExceptionHandler(value = DocumentException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public LicenseResponse handleParamsInvalidException(YinXXException e) {
+    public LicenseResponse handleParamsInvalidException(DocumentException e) {
         log.error("系统错误：{}", e.getMessage());
         return new LicenseResponse().message(e.getMessage());
     }

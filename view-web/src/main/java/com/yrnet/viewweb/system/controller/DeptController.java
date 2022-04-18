@@ -5,7 +5,7 @@ import com.wuwenze.poi.ExcelKit;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.controller.BaseController;
 import com.yrnet.viewweb.common.entity.QueryRequestPage;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.system.entity.Dept;
 import com.yrnet.viewweb.system.service.IDeptService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,53 +39,53 @@ public class DeptController extends BaseController {
     @Log("新增部门")
     @PostMapping
     @RequiresPermissions("dept:add")
-    public void addDept(@Valid Dept dept) throws YinXXException {
+    public void addDept(@Valid Dept dept) throws DocumentException {
         try {
             this.deptService.createDept(dept);
         } catch (Exception e) {
             message = "新增部门失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("删除部门")
     @DeleteMapping("/{deptIds}")
     @RequiresPermissions("dept:delete")
-    public void deleteDepts(@NotBlank(message = "{required}") @PathVariable String deptIds) throws YinXXException {
+    public void deleteDepts(@NotBlank(message = "{required}") @PathVariable String deptIds) throws DocumentException {
         try {
             String[] ids = deptIds.split(StringPool.COMMA);
             this.deptService.deleteDepts(ids);
         } catch (Exception e) {
             message = "删除部门失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("修改部门")
     @PutMapping
     @RequiresPermissions("dept:update")
-    public void updateDept(@Valid Dept dept) throws YinXXException {
+    public void updateDept(@Valid Dept dept) throws DocumentException {
         try {
             this.deptService.updateDept(dept);
         } catch (Exception e) {
             message = "修改部门失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("dept:export")
-    public void export(Dept dept, QueryRequestPage request, HttpServletResponse response) throws YinXXException {
+    public void export(Dept dept, QueryRequestPage request, HttpServletResponse response) throws DocumentException {
         try {
             List<Dept> depts = this.deptService.findDepts(dept, request);
             ExcelKit.$Export(Dept.class, response).downXlsx(depts, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 }

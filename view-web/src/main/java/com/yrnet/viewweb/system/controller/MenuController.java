@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.wuwenze.poi.ExcelKit;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.controller.BaseController;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.router.VueRouter;
 import com.yrnet.viewweb.system.entity.Menu;
 import com.yrnet.viewweb.system.manager.UserManager;
@@ -49,53 +49,53 @@ public class MenuController extends BaseController {
     @Log("新增菜单/按钮")
     @PostMapping
     @RequiresPermissions("menu:add")
-    public void addMenu(@Valid Menu menu) throws YinXXException {
+    public void addMenu(@Valid Menu menu) throws DocumentException {
         try {
             this.menuService.createMenu(menu);
         } catch (Exception e) {
             message = "新增菜单/按钮失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("删除菜单/按钮")
     @DeleteMapping("/{menuIds}")
     @RequiresPermissions("menu:delete")
-    public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) throws YinXXException {
+    public void deleteMenus(@NotBlank(message = "{required}") @PathVariable String menuIds) throws DocumentException {
         try {
             String[] ids = menuIds.split(StringPool.COMMA);
             this.menuService.deleteMeuns(ids);
         } catch (Exception e) {
             message = "删除菜单/按钮失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("修改菜单/按钮")
     @PutMapping
     @RequiresPermissions("menu:update")
-    public void updateMenu(@Valid Menu menu) throws YinXXException {
+    public void updateMenu(@Valid Menu menu) throws DocumentException {
         try {
             this.menuService.updateMenu(menu);
         } catch (Exception e) {
             message = "修改菜单/按钮失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("menu:export")
-    public void export(Menu menu, HttpServletResponse response) throws YinXXException {
+    public void export(Menu menu, HttpServletResponse response) throws DocumentException {
         try {
             List<Menu> menus = this.menuService.findMenuList(menu);
             ExcelKit.$Export(Menu.class, response).downXlsx(menus, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 }

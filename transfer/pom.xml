@@ -83,6 +83,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-pdf</artifactId>
+            <version>17.8.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.asprise.ocr</groupId>
             <artifactId>java-ocr-api</artifactId>
             <version>[15,)</version>

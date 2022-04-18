@@ -6,7 +6,7 @@ import com.yrnet.viewweb.business.video.entity.ShareLog;
 import com.yrnet.viewweb.business.video.mapper.ShareLogMapper;
 import com.yrnet.viewweb.business.video.service.IShareDownloadAuthService;
 import com.yrnet.viewweb.business.video.service.IShareLogService;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.service.ISeqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class ShareLogServiceImpl extends ServiceImpl<ShareLogMapper, ShareLog> i
     private IShareDownloadAuthService shareDownloadAuthService;
 
     @Override
-    public void add(ShareReqDto dto) throws YinXXException {
+    public void add(ShareReqDto dto) throws DocumentException {
         ShareLog log = new ShareLog();
         this.transToEntity(dto,log);
         this.save(log);

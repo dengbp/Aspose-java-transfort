@@ -1,6 +1,6 @@
 package com.yrnet.viewweb.common.configure;
 
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -55,7 +55,7 @@ public class TransactionalConfig {
         /*当前存在事务就使用当前事务，当前不存在事务就创建一个新的事务*/
         RuleBasedTransactionAttribute required = new RuleBasedTransactionAttribute();
         /*抛出异常后执行切点回滚,这边你可以更换异常的类型*/
-        required.setRollbackRules(Collections.singletonList(new RollbackRuleAttribute(YinXXException.class)));
+        required.setRollbackRules(Collections.singletonList(new RollbackRuleAttribute(DocumentException.class)));
         /*PROPAGATION_REQUIRED:事务隔离性为1，若当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。这是默认值*/
         required.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         /*设置事务失效时间，如果超过5秒，则回滚事务*/

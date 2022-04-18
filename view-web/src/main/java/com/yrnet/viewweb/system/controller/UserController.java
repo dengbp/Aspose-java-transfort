@@ -5,7 +5,7 @@ import com.wuwenze.poi.ExcelKit;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.controller.BaseController;
 import com.yrnet.viewweb.common.entity.QueryRequestPage;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.utils.MD5Util;
 import com.yrnet.viewweb.system.entity.Role;
 import com.yrnet.viewweb.system.entity.User;
@@ -70,75 +70,75 @@ public class UserController extends BaseController {
     @Log("新增用户")
     @PostMapping
     @RequiresPermissions("user:add")
-    public void addUser(@Valid User user) throws YinXXException {
+    public void addUser(@Valid User user) throws DocumentException {
         try {
             this.userService.createUser(user);
         } catch (Exception e) {
             message = "新增用户失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("修改用户")
     @PutMapping
     @RequiresPermissions("user:update")
-    public void updateUser(@Valid User user) throws YinXXException {
+    public void updateUser(@Valid User user) throws DocumentException {
         try {
             this.userService.updateUser(user);
         } catch (Exception e) {
             message = "修改用户失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @Log("删除用户")
     @DeleteMapping("/{userIds}")
     @RequiresPermissions("user:delete")
-    public void deleteUsers(@NotBlank(message = "{required}") @PathVariable String userIds) throws YinXXException {
+    public void deleteUsers(@NotBlank(message = "{required}") @PathVariable String userIds) throws DocumentException {
         try {
             String[] ids = userIds.split(StringPool.COMMA);
             this.userService.deleteUsers(ids);
         } catch (Exception e) {
             message = "删除用户失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PutMapping("profile")
-    public void updateProfile(@Valid User user) throws YinXXException {
+    public void updateProfile(@Valid User user) throws DocumentException {
         try {
             this.userService.updateProfile(user);
         } catch (Exception e) {
             message = "修改个人信息失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PutMapping("avatar")
     public void updateAvatar(
             @NotBlank(message = "{required}") String username,
-            @NotBlank(message = "{required}") String avatar) throws YinXXException {
+            @NotBlank(message = "{required}") String avatar) throws DocumentException {
         try {
             this.userService.updateAvatar(username, avatar);
         } catch (Exception e) {
             message = "修改头像失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PutMapping("userconfig")
-    public void updateUserConfig(@Valid UserConfig userConfig) throws YinXXException {
+    public void updateUserConfig(@Valid UserConfig userConfig) throws DocumentException {
         try {
             this.userConfigService.update(userConfig);
         } catch (Exception e) {
             message = "修改个性化配置失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
@@ -159,39 +159,39 @@ public class UserController extends BaseController {
     @PutMapping("password")
     public void updatePassword(
             @NotBlank(message = "{required}") String username,
-            @NotBlank(message = "{required}") String password) throws YinXXException {
+            @NotBlank(message = "{required}") String password) throws DocumentException {
         try {
             userService.updatePassword(username, password);
         } catch (Exception e) {
             message = "修改密码失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PutMapping("password/reset")
     @RequiresPermissions("user:reset")
-    public void resetPassword(@NotBlank(message = "{required}") String usernames) throws YinXXException {
+    public void resetPassword(@NotBlank(message = "{required}") String usernames) throws DocumentException {
         try {
             String[] usernameArr = usernames.split(StringPool.COMMA);
             this.userService.resetPassword(usernameArr);
         } catch (Exception e) {
             message = "重置用户密码失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 
     @PostMapping("excel")
     @RequiresPermissions("user:export")
-    public void export(QueryRequestPage queryRequest, User user, HttpServletResponse response) throws YinXXException {
+    public void export(QueryRequestPage queryRequest, User user, HttpServletResponse response) throws DocumentException {
         try {
             List<User> users = this.userService.findUserDetail(user, queryRequest).getRecords();
             ExcelKit.$Export(User.class, response).downXlsx(users, false);
         } catch (Exception e) {
             message = "导出Excel失败";
             log.error(message, e);
-            throw new YinXXException(message);
+            throw new DocumentException(message);
         }
     }
 }

@@ -7,7 +7,7 @@ import com.yrnet.viewweb.common.authentication.JwtToken;
 import com.yrnet.viewweb.common.controller.BaseController;
 import com.yrnet.viewweb.common.entity.LicenseResponse;
 import com.yrnet.viewweb.common.entity.ViewWebConstant;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.properties.ViewWebProperties;
 import com.yrnet.viewweb.common.utils.*;
 import com.yrnet.viewweb.monitor.entity.ActiveUser;
@@ -83,13 +83,13 @@ public class EMLoginController extends BaseController {
         User user = this.userManager.getUser(username);
 
         if (user == null) {
-            throw new YinXXException(errorMessage);
+            throw new DocumentException(errorMessage);
         }
         if (!StringUtils.equals(user.getPassword(), password)) {
-            throw new YinXXException(errorMessage);
+            throw new DocumentException(errorMessage);
         }
         if (User.STATUS_LOCK.equals(user.getStatus())) {
-            throw new YinXXException("账号已被锁定,请联系管理员！");
+            throw new DocumentException("账号已被锁定,请联系管理员！");
         }
         log.info("验证用户是否已在别处登录...");
         Set<ActiveUser> activeUsers = this.getActiveUser(null);

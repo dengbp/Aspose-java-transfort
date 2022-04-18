@@ -1,5 +1,6 @@
 package com.yrnet.transfer.business.transfer.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,8 +11,9 @@ import javax.validation.constraints.NotNull;
  * @Description TODO
  * @date 4/17/22 12:20 AM
  */
+@Builder
 @Data
-public class TransferReq {
+public class TransferResponse {
     private Integer fileId;
     @NotNull
     private String filePath;
@@ -31,7 +33,4 @@ public class TransferReq {
      * odt转pdf:13
      * doc转pdf:14
      **/
-    @NotNull
-    private Integer toType;
-
 }

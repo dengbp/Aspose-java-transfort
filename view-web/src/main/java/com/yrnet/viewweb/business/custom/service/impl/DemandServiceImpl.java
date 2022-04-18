@@ -5,7 +5,7 @@ import com.yrnet.viewweb.business.custom.dto.CustomDemandReqDto;
 import com.yrnet.viewweb.business.custom.entity.Demand;
 import com.yrnet.viewweb.business.custom.mapper.DemandMapper;
 import com.yrnet.viewweb.business.custom.service.IDemandService;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class DemandServiceImpl extends ServiceImpl<DemandMapper, Demand> implements IDemandService {
 
     @Override
-    public void addDemand(CustomDemandReqDto reqDto) throws YinXXException {
+    public void addDemand(CustomDemandReqDto reqDto) throws DocumentException {
         Demand demand = new Demand();
         demand.setDemand(reqDto.getDemand());
         demand.setPhone(reqDto.getPhone());

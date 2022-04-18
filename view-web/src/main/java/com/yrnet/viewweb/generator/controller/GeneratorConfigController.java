@@ -3,7 +3,7 @@ package com.yrnet.viewweb.generator.controller;
 import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.controller.BaseController;
 import com.yrnet.viewweb.common.entity.LicenseResponse;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.generator.entity.GeneratorConfig;
 import com.yrnet.viewweb.generator.service.IGeneratorConfigService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class GeneratorConfigController extends BaseController {
     @ControllerEndpoint(operation = "修改GeneratorConfig", exceptionMessage = "修改GeneratorConfig失败")
     public LicenseResponse updateGeneratorConfig(@Valid GeneratorConfig generatorConfig) {
         if (StringUtils.isBlank(generatorConfig.getId()))
-            throw new YinXXException("配置id不能为空");
+            throw new DocumentException("配置id不能为空");
         this.generatorConfigService.updateGeneratorConfig(generatorConfig);
         return new LicenseResponse().success();
     }

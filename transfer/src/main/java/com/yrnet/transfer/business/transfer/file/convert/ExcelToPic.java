@@ -1,4 +1,4 @@
-package com.yrnet.transfer.business.transfer.file.file2pic;
+package com.yrnet.transfer.business.transfer.file.convert;
 
 import com.aspose.cells.*;
 import com.yrnet.transfer.business.transfer.file.Out;
@@ -10,7 +10,7 @@ import com.yrnet.transfer.business.transfer.file.Out;
  **/
 public class ExcelToPic {
 
-    public static void excelToPdf(String inPath, String outPath) {
+    public static void excelToPdf(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
             return;
         }
@@ -18,7 +18,7 @@ public class ExcelToPic {
             long old = System.currentTimeMillis();
 
 
-            Workbook wb = new Workbook(inPath);
+            Workbook wb = new Workbook(inFile);
             Worksheet sheet = wb.getWorksheets().get(0);
             ImageOrPrintOptions imgOptions = new ImageOrPrintOptions();
             imgOptions.setImageFormat(ImageFormat.getPng());
@@ -26,10 +26,10 @@ public class ExcelToPic {
             imgOptions.setOnePagePerSheet(true);
             SheetRender render = new SheetRender(sheet, imgOptions);
 
-            render.toImage(0, outPath);
+            render.toImage(0, outFile);
 
             long now = System.currentTimeMillis();
-            Out.print(inPath, outPath, now, old);
+            Out.print(inFile, outFile, now, old);
         }catch (Exception e) {
             e.printStackTrace();
         }

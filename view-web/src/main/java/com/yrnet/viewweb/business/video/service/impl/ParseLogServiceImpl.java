@@ -15,7 +15,7 @@ import com.yrnet.viewweb.business.video.entity.Ranking;
 import com.yrnet.viewweb.business.video.mapper.ParseLogMapper;
 import com.yrnet.viewweb.business.video.service.IParseLogService;
 import com.yrnet.viewweb.common.entity.QueryRequestPage;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.properties.ViewWebProperties;
 import com.yrnet.viewweb.common.service.ISeqService;
 import com.yrnet.viewweb.common.utils.DateUtil;
@@ -56,7 +56,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
 
 
     @Override
-    public VideoParseRespDto parseVideo(VideoParseReqDto reqDto) throws YinXXException {
+    public VideoParseRespDto parseVideo(VideoParseReqDto reqDto) throws DocumentException {
         String result;
         try {
             List<ParseLog> parseLogs = this.list(new LambdaQueryWrapper<ParseLog>().eq(ParseLog::getParseUrl,reqDto.getParseUrl()));
@@ -71,7 +71,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
             result = HttpUtil.sendPost(yinXXProperties.getVideo_parse_url()+reqDto.getParseUrl(),null);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new YinXXException(e.getMessage());
+            throw new DocumentException(e.getMessage());
         }
         VideoParseRespDto respDto = this.handle(reqDto,result);
         try {
@@ -111,7 +111,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
      **/
 
     @Override
-    public boolean allowDownload(String userId) throws YinXXException {
+    public boolean allowDownload(String userId) throws DocumentException {
         UserAccount userAccount = userAccountService.getByUserId(userId);
         if (userAccount == null){
             return false;
@@ -123,7 +123,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
     }
 
     @Override
-    public void updateDownloadRecord(VideoDownloadReqDto dto) throws YinXXException {
+    public void updateDownloadRecord(VideoDownloadReqDto dto) throws DocumentException {
         userAccountService.updateByUserId(dto.getUserId());
         ParseLog log  = this.getById(dto.getVideoId());
         if (log != null) {
@@ -136,12 +136,12 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
     }
 
     @Override
-    public List<Ranking> ranking() throws YinXXException {
+    public List<Ranking> ranking() throws DocumentException {
         return parseLogMapper.ranking();
     }
 
     @Override
-    public List<ParseLogRespDto> queryLog(ParseLogReqDto dto) throws YinXXException {
+    public List<ParseLogRespDto> queryLog(ParseLogReqDto dto) throws DocumentException {
         LambdaQueryWrapper<ParseLog> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ParseLog::getUserId,dto.getUserId());
         queryWrapper.orderByDesc(ParseLog::getCreateTime);
@@ -164,7 +164,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
     }
 
     @Override
-    public List<ParseLogRespDto>  onlineList(QueryRequestPage requestPage)throws YinXXException{
+    public List<ParseLogRespDto>  onlineList(QueryRequestPage requestPage)throws DocumentException {
         Page<ParseLog> page = new Page<>(requestPage.getPageNum(), requestPage.getPageSize());
         List<ParseLog> logs = baseMapper.selectPage(page,new LambdaQueryWrapper<ParseLog>().ne(ParseLog::getImg,"illegal").orderByDesc(ParseLog::getCreateTime)).getRecords();
         return this.returnVideoList(logs,1);
@@ -188,7 +188,7 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
     }
 
     @Override
-    public MultipartFileRespDto saveFile(MultipartFile file, String relationId, String openId) throws YinXXException {
+    public MultipartFileRespDto saveFile(MultipartFile file, String relationId, String openId) throws DocumentException {
         String originName = file.getOriginalFilename();
         log.info("begin upload file[{}]",originName);
         String path = FileUtil.getFilePath(yinXXProperties,originName);
@@ -220,12 +220,12 @@ public class ParseLogServiceImpl extends ServiceImpl<ParseLogMapper, ParseLog> i
             return respDto;
         } catch (Exception e) {
             log.error("上传失败",e);
-            throw new YinXXException(e.getMessage());
+            throw new DocumentException(e.getMessage());
         }
     }
 
     @Override
-    public void release(MultipartInfoRequestDto dto) throws YinXXException {
+    public void release(MultipartInfoRequestDto dto) throws DocumentException {
 
     }
 

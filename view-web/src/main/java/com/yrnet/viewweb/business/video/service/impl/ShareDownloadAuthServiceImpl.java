@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yrnet.viewweb.business.video.entity.ShareDownloadAuth;
 import com.yrnet.viewweb.business.video.mapper.ShareDownloadAuthMapper;
 import com.yrnet.viewweb.business.video.service.IShareDownloadAuthService;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.properties.ViewWebProperties;
 import com.yrnet.viewweb.common.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class ShareDownloadAuthServiceImpl extends ServiceImpl<ShareDownloadAuthM
 
 
     @Override
-    public void insert(String userId, String shareTime) throws YinXXException {
+    public void insert(String userId, String shareTime) throws DocumentException {
         Long st = Long.parseLong(shareTime.substring(0,8));
         LambdaQueryWrapper<ShareDownloadAuth> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShareDownloadAuth::getUserId,userId);
@@ -44,7 +44,7 @@ public class ShareDownloadAuthServiceImpl extends ServiceImpl<ShareDownloadAuthM
     }
 
     @Override
-    public Integer getCurrentTimes(String userId) throws YinXXException {
+    public Integer getCurrentTimes(String userId) throws DocumentException {
         LambdaQueryWrapper<ShareDownloadAuth> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShareDownloadAuth::getUserId,userId);
         queryWrapper.eq(ShareDownloadAuth::getCreateTime, Long.parseLong(DateUtil.current_yyyyMMdd()));
@@ -56,7 +56,7 @@ public class ShareDownloadAuthServiceImpl extends ServiceImpl<ShareDownloadAuthM
     }
 
     @Override
-    public void updateTimes(String userId) throws YinXXException {
+    public void updateTimes(String userId) throws DocumentException {
         LambdaQueryWrapper<ShareDownloadAuth> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(ShareDownloadAuth::getUserId,userId);
         List<ShareDownloadAuth> tmp = this.list(queryWrapper);

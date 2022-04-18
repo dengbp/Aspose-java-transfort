@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yrnet.viewweb.business.bill.entity.UserAccount;
 import com.yrnet.viewweb.business.bill.mapper.UserAccountMapper;
 import com.yrnet.viewweb.business.bill.service.IUserAccountService;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.utils.DateUtil;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserAccount> implements IUserAccountService {
 
     @Override
-    public UserAccount getByUserId(String userId) throws YinXXException {
+    public UserAccount getByUserId(String userId) throws DocumentException {
         List<UserAccount> userAccounts = list(new LambdaQueryWrapper<UserAccount>().eq(UserAccount::getStatus,0).eq(UserAccount::getUserId,userId));
         return (userAccounts == null || userAccounts.isEmpty())?null:userAccounts.get(0);
     }
@@ -32,7 +32,7 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
     static final int plan_3 = 5000;
 
     @Override
-    public void upInsert(String userId, Integer amount) throws YinXXException {
+    public void upInsert(String userId, Integer amount) throws DocumentException {
         int base = 0;
         switch (amount) {
             case plan_1:
@@ -65,7 +65,7 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
     }
 
     @Override
-    public void updateByUserId(String userId) throws YinXXException {
+    public void updateByUserId(String userId) throws DocumentException {
         UserAccount userAccount = this.getByUserId(userId);
         if (userAccount != null){
             userAccount.setUpdateTime(Long.parseLong(DateUtil.current_yyyyMMddHHmmss()));

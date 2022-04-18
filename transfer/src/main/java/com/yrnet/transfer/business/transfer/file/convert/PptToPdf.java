@@ -1,4 +1,4 @@
-package com.yrnet.transfer.business.transfer.file.file2Pdf;
+package com.yrnet.transfer.business.transfer.file.convert;
 
 import com.aspose.slides.Presentation;
 import com.yrnet.transfer.business.transfer.file.Out;
@@ -15,19 +15,19 @@ import java.io.FileOutputStream;
  **/
 public class PptToPdf {
 
-    public static void pptToPdf(String inPath, String outPath) {
+    public static void pptToPdf(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getPptLicense()) {
             return;
         }
         try {
             long old = System.currentTimeMillis();
-            File pdfFile = new File(outPath);
+            File pdfFile = new File(outFile);
             FileOutputStream os = new FileOutputStream(pdfFile);
-            Presentation pres = new Presentation(inPath);
+            Presentation pres = new Presentation(inFile);
             pres.save(os, com.aspose.slides.SaveFormat.Pdf);
             os.close();
             long now = System.currentTimeMillis();
-            Out.print(inPath, outPath, now, old);
+            Out.print(inFile, outFile, now, old);
         } catch (Exception e) {
             e.printStackTrace();
         }

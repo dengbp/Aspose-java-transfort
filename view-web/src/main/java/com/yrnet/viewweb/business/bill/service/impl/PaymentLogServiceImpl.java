@@ -12,7 +12,7 @@ import com.yrnet.viewweb.business.bill.mapper.PaymentLogMapper;
 import com.yrnet.viewweb.business.bill.service.IPaymentLogService;
 import com.yrnet.viewweb.business.bill.service.IPlanServiceService;
 import com.yrnet.viewweb.business.bill.service.IUserAccountService;
-import com.yrnet.viewweb.common.exception.YinXXException;
+import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.service.ISeqService;
 import com.yrnet.viewweb.common.utils.DateUtil;
 import com.yrnet.viewweb.common.utils.PayUtil;
@@ -189,7 +189,7 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
     }
 
     @Override
-    public List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws YinXXException {
+    public List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException {
         LambdaQueryWrapper<PaymentLog> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(PaymentLog::getStatus,2).eq(PaymentLog::getUserId,reqDto.getUserId()).orderByDesc(PaymentLog::getCreateTime);
         List<PaymentLog> logs = this.list(queryWrapper);
