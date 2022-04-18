@@ -20,6 +20,8 @@ import java.util.*;
  */
 public class CodeGenerator {
 
+    private static String projectName = "view-web";
+
     // 数据库 URL
     private static final String URL = "jdbc:mysql://124.220.16.138:3306/yr_document?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     // 数据库驱动
@@ -50,7 +52,7 @@ public class CodeGenerator {
         AutoGenerator generator = new AutoGenerator();
         /** 全局配置 */
         GlobalConfig globalConfig = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        String projectPath = System.getProperty("user.dir")+"/"+projectName;
         globalConfig.setOutputDir(projectPath + "/src/main/java");
         globalConfig.setAuthor(AUTHOR);
         globalConfig.setOpen(false);

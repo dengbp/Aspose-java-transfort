@@ -1,4 +1,4 @@
-package com.yrnet.transfer.business.transfer.dto;
+package com.yrnet.viewweb.business.file.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +27,8 @@ public class TransferResponse {
      * 新文件大小，单位kb
      */
     private Long fileSize;
+
     /** 转换状态 0成功 1失败 */
     private Integer state;
+
 }

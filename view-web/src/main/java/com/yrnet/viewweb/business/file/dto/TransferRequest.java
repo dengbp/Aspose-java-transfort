@@ -1,5 +1,6 @@
-package com.yrnet.transfer.business.transfer.dto;
+package com.yrnet.viewweb.business.file.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
  * @Description TODO
  * @date 4/17/22 12:20 AM
  */
+@Builder
 @Data
 public class TransferRequest {
     private Long fileId;

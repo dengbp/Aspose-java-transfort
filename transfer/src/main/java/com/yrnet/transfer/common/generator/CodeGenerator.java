@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
@@ -18,6 +19,8 @@ import java.util.*;
  * @link https://mp.baomidou.com/guide/generator.html
  */
 public class CodeGenerator {
+
+    private static String projectName = "transfer";
 
     // 数据库 URL
     private static final String URL = "jdbc:mysql://192.168.1.12:3306/segi_cmdb?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -50,7 +53,7 @@ public class CodeGenerator {
         AutoGenerator generator = new AutoGenerator();
         //** 全局配置 *//*
         GlobalConfig globalConfig = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        String projectPath = System.getProperty("user.dir")+"/"+projectName;
         globalConfig.setOutputDir(projectPath + "/src/main/java");
         globalConfig.setAuthor(AUTHOR);
         globalConfig.setOpen(false);

@@ -26,6 +26,7 @@ public class ViewWebProperties {
     private String url_base;
 
     private String video_parse_url;
+    private String file_path;
     private String video_path;
     private Integer share_download_limit;
 

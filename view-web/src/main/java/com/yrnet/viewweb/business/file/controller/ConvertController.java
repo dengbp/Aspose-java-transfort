@@ -2,11 +2,12 @@ package com.yrnet.viewweb.business.file.controller;
 
 import com.yrnet.viewweb.business.file.bo.FileConvertBo;
 import com.yrnet.viewweb.business.file.dto.ConvertLogRequest;
-import com.yrnet.viewweb.business.file.service.IConvertHandleService;
+import com.yrnet.viewweb.business.file.service.IConvertLogService;
 import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.entity.ViewWebResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,10 +23,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/manager")
 @Slf4j
-public class PrivateSpaceController {
+public class ConvertController {
 
     @Resource
-    private IConvertHandleService convertHandleService;
+    private IConvertLogService convertLogService;
 
     /**
      * Description 转换文档上传
@@ -44,8 +45,13 @@ public class PrivateSpaceController {
         if (file == null) {
             return new ViewWebResponse().fail().message("上传失败，文件为空");
         }
-        return new ViewWebResponse().success().data(convertHandleService.convert(FileConvertBo.builder().build()));
+        if (StringUtils.isBlank(openId)){
+            return new ViewWebResponse().fail().message("openId为空");
+        }
+        return new ViewWebResponse().success().data(convertLogService.handle(FileConvertBo.builder().file(file).openId(openId).toType(toType).build()));
     }
+
+
 
 
     @PostMapping("/doc/log")
@@ -53,6 +59,6 @@ public class PrivateSpaceController {
     @ControllerEndpoint(operation = "转换记录查询", exceptionMessage = "转换记录查询失败")
     @Log("转换记录查询接口")
     public ViewWebResponse log(@RequestBody @Valid ConvertLogRequest request){
-        return new ViewWebResponse().success().data(convertHandleService.queryLog(request));
+        return new ViewWebResponse().success().data(convertLogService.queryLog(request));
     }
 }

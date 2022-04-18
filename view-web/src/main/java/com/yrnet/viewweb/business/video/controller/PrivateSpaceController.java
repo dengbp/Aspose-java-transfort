@@ -28,26 +28,6 @@ public class PrivateSpaceController {
     @Resource
     private IParseLogService parseLogService;
 
-    /**
-     * Description 转换文档上传
-     * @param file 文件
-     * @param toType 转换成目标文档类型：1转成图片；2转成word;3转成pdf;...
-     * @param openId 用户id
-     * @return com.yr.net.app.base.dto.RestResult
-     * @Author dengbp
-     * @Date 23:59 2020-11-24
-     **/
-    @RequestMapping("/doc/upload")
-    @ResponseBody
-    @ControllerEndpoint(operation = "用户多媒体上传", exceptionMessage = "用户多媒体上传失败")
-    @Log("用户转换文档上传")
-    public ViewWebResponse upload(@RequestParam("file") MultipartFile file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
-        if (file == null) {
-            return new ViewWebResponse().fail().message("上传失败，文件为空");
-        }
-        return new ViewWebResponse().success().data( parseLogService.saveFile(file,"",openId));
-    }
-
 
     @PostMapping("/log")
     @ResponseBody

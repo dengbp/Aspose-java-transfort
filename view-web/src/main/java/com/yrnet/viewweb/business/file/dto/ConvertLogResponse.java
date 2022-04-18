@@ -15,9 +15,9 @@ import java.io.Serializable;
 @Data
 public class ConvertLogResponse implements Serializable {
 
-    /** 视频id*/
+    /** 文件id*/
     private Long fileId;
-    /** 视频标题*/
+    /** 新文件名带后缀*/
     private String fileName;
 
     /**
@@ -40,6 +40,6 @@ public class ConvertLogResponse implements Serializable {
     /** 是否允许下载 0允许 1禁止(无可用下载次数) 2可下载需减1 */
     private Integer allow;
 
-    /** 文件大小，单位kB */
-    private Integer fileSize;
+    /** 新文件大小，单位kB */
+    private Long fileSize;
 }

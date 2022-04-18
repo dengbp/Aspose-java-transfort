@@ -1,6 +1,6 @@
-package com.yrnet.viewweb.business.custom.controller;
+package com.yrnet.viewweb.business.file.controller;
 
-import com.yrnet.viewweb.business.custom.service.TransferApi;
+import com.yrnet.viewweb.business.file.service.TransferApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
