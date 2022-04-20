@@ -45,8 +45,10 @@ public class LoginController {
 
     @PostMapping("/login")
     public ViewWebResponse login(@RequestBody LoginDto loginDto) {
-        if (!StringUtils.isNotBlank(loginDto.getCode())) {
-            return new ViewWebResponse().fail().message("未获取到用户凭证code");
+        ViewWebResponse response = new ViewWebResponse().success().message("success");
+        validator(response,loginDto);
+        if (!response.isNormal()){
+            return response;
         }
         String apiUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxConfig.getAppId() + "&secret=" + wxConfig.getSecret() + "&js_code=" + loginDto.getCode() + "&grant_type=authorization_code";
         String responseBody = HttpClientUtil.doGet(apiUrl);
@@ -57,7 +59,9 @@ public class LoginController {
         if (StringUtils.isNotBlank(jsonObject.getString("openid"))
                 && StringUtils.isNotBlank(jsonObject.getString("session_key"))) {
             JSONObject userInfoJson= WeChatGetUserInfoUtil.getUserInfo(loginDto.getEncryptedData(),jsonObject.getString("session_key"),loginDto.getIv());
-            assert userInfoJson != null;
+            if (userInfoJson == null){
+                return response.fail().message("解析用户信息失败");
+            }
             wxUser.getWxUser(userInfoJson);
             WxUser wxUserFromData = wxUserService.queryByOpenId(wxUser.getWxOpenId());
             if (wxUserFromData == null) {
@@ -75,7 +79,23 @@ public class LoginController {
                 userRelation = userRelationService.selectByWxOpenId(wxUser.getWxOpenId(), 1);
             }
         }
-        return new ViewWebResponse().success().data(LoginVo.builder().wxUser(wxUser).sessionKey(jsonObject.getString("session_key")).userRelation(userRelation).build());
+        return response.data(LoginVo.builder().wxUser(wxUser).sessionKey(jsonObject.getString("session_key")).userRelation(userRelation).build());
+    }
+
+    private void validator(ViewWebResponse  response,LoginDto loginDto){
+        if (StringUtils.isBlank(loginDto.getEncryptedData())){
+            response.fail().message("encryptedData is null");
+            return;
+        }
+        if (StringUtils.isBlank(loginDto.getIv())){
+            response.fail().message("iv is null");
+            return;
+        }
+        if (StringUtils.isBlank(loginDto.getCode())){
+            response.fail().message("code is null");
+            return;
+        }
+
     }
 
     @PostMapping("/phone")

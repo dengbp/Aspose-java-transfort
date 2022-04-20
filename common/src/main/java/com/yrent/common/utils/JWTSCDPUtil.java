@@ -1,4 +1,4 @@
-package com.yrnet.viewweb.common.utils;
+package com.yrent.common.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -17,6 +17,8 @@ import java.util.Map;
  * @date 2020/9/22 17:16
  */
 public class JWTSCDPUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(JWTSCDPUtil.class);
 
     /**
      * token秘钥，自定义秘钥，请勿随便修改

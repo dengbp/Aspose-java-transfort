@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.controller.BaseController;
 import com.yrnet.viewweb.common.entity.LicenseResponse;
-import com.yrnet.viewweb.common.enums.ProductSuggestionType;
+import com.yrnet.viewweb.common.constant.ProductSuggestionType;
 import com.yrnet.viewweb.common.utils.DateUtil;
 import com.yrnet.viewweb.common.utils.LicenseUtil;
 import com.yrnet.viewweb.system.Dto.SystemParamsDto;

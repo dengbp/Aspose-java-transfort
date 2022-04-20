@@ -1,8 +1,9 @@
 package com.yrnet.viewweb.business.file.service;
 
 import com.yrnet.viewweb.business.file.dto.TransferRequest;
-import com.yrnet.viewweb.business.file.dto.TransferResponse;
+import com.yrnet.viewweb.business.file.dto.ConvertResponse;
 import com.yrnet.viewweb.common.exception.DocumentException;
+import com.yrnet.viewweb.common.http.TransferResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

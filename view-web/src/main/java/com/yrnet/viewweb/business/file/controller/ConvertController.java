@@ -1,5 +1,7 @@
 package com.yrnet.viewweb.business.file.controller;
 
+import com.yrent.common.constant.ConvertType;
+import com.yrent.common.constant.FileSuffixConstant;
 import com.yrnet.viewweb.business.file.bo.FileConvertBo;
 import com.yrnet.viewweb.business.file.dto.ConvertLogRequest;
 import com.yrnet.viewweb.business.file.service.IConvertLogService;
@@ -42,13 +44,104 @@ public class ConvertController {
     @ControllerEndpoint(operation = "用户多媒体上传", exceptionMessage = "用户多媒体上传失败")
     @Log("用户转换文档上传")
     public ViewWebResponse upload(@RequestParam("file") MultipartFile file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
+        ViewWebResponse response = new ViewWebResponse().success();
         if (file == null) {
-            return new ViewWebResponse().fail().message("上传失败，文件为空");
+            return response.fail().message("上传失败，文件为空");
         }
         if (StringUtils.isBlank(openId)){
-            return new ViewWebResponse().fail().message("openId为空");
+            return response.fail().message("openId为空");
         }
-        return new ViewWebResponse().success().data(convertLogService.handle(FileConvertBo.builder().file(file).openId(openId).toType(toType).build()));
+        validator(file,toType,response);
+        if (!response.isNormal()){
+            return response;
+        }
+        return response.message("请求处理成功").data(convertLogService.handle(FileConvertBo.builder().file(file).openId(openId).toType(toType).build()));
+    }
+
+    private void validator(MultipartFile file,int toType,ViewWebResponse response){
+        response.fail().message("文件类型与转换目标不对应");
+        String fileName = file.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
+        ConvertType type = ConvertType.getByCode((char)toType);
+        switch (type){
+            case word_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix, FileSuffixConstant.DOC)){
+                    response.success();
+                }
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOCX)){
+                    response.success();
+                }
+                break;
+            case pdf_to_word:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case pdf_to_docx:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case excel_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.EXCEL)){
+                    response.success();
+                }
+                break;
+            case pdf_to_excel:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case ppt_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case pdf_to_ppt:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case jpg_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.JPG)){
+                    response.success();
+                }
+                break;
+            case pdf_to_jpg:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case png_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PNG)){
+                    response.success();
+                }
+                break;
+            case pdf_to_png:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                    response.success();
+                }
+                break;
+            case docx_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOCX)){
+                    response.success();
+                }
+                break;
+            case odt_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.ODT)){
+                    response.success();
+                }
+                break;
+            case doc_to_pdf:
+                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOC)){
+                    response.success();
+                }
+                break;
+            default:
+                response.message("格式不匹配！");
+                log.warn("no type match!");
+                break;
+        }
     }
 
 

@@ -15,9 +15,9 @@ import java.io.FileOutputStream;
  **/
 public class ExcelToPdf {
 
-    public static void excelToPdf(String inFile, String outFile) {
+    public static long excelToPdf(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
-            return;
+            return 0;
         }
         try {
             long old = System.currentTimeMillis();
@@ -30,8 +30,10 @@ public class ExcelToPdf {
             fileOS.close();
             long now = System.currentTimeMillis();
             Out.print(inFile, outFile, now, old);
+            return pdfFile.length();
         }catch (Exception e) {
             e.printStackTrace();
+            return 0;
         }
 
     }

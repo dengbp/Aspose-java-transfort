@@ -1,4 +1,4 @@
-package com.yrnet.transfer.business.transfer.constant;
+package com.yrent.common.constant;
 
 /**
  * @author dengbp

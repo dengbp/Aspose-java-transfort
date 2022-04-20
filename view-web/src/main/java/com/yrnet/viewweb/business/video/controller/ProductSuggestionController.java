@@ -7,7 +7,7 @@ import com.yrnet.viewweb.business.video.service.IProductSuggestionService;
 import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.entity.ViewWebResponse;
-import com.yrnet.viewweb.common.enums.ProductSuggestionType;
+import com.yrnet.viewweb.common.constant.ProductSuggestionType;
 import com.yrnet.viewweb.common.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

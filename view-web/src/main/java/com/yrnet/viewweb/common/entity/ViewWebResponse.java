@@ -32,10 +32,18 @@ public class ViewWebResponse extends HashMap<String, Object> {
         return this;
     }
 
+    public boolean isNormal() {
+        if (HttpStatus.OK.value() == (Integer) this.get("code")){
+            return true;
+        }
+        return false;
+    }
+
     public ViewWebResponse fail() {
         this.code(HttpStatus.INTERNAL_SERVER_ERROR.value());
         return this;
     }
+
 
     public ViewWebResponse fail(int code) {
         this.code(code);

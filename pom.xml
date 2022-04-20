@@ -17,9 +17,10 @@
     <description>Demo project for Spring Boot</description>
 
     <modules>
+        <module>common</module>
+        <module>register-center</module>
         <module>transfer</module>
         <module>view-web</module>
-        <module>register-center</module>
     </modules>
 
 

@@ -6,6 +6,8 @@ import com.aspose.pdf.Document;
 import com.aspose.pdf.SaveFormat;
 import com.yrnet.transfer.business.transfer.file.Out;
 
+import java.io.File;
+
 
 /**
  * @author dengbp
@@ -15,9 +17,9 @@ import com.yrnet.transfer.business.transfer.file.Out;
  */
 public class PdfToWord {
 
-    public static void pdfToDoc(String inFile, String outFile) {
+    public static long pdfToDoc(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getPptLicense()) {
-            return;
+            return 0;
         }
         long old = System.currentTimeMillis();
         // Open the source PDF document
@@ -26,11 +28,12 @@ public class PdfToWord {
         pdfDocument.save(outFile, SaveFormat.Doc);
         long now = System.currentTimeMillis();
         Out.print(inFile, outFile, now, old);
+        return new File(outFile).length();
     }
 
-    public static void pdfToDOCX(String inFile, String outFile) {
+    public static long pdfToDOCX(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getPptLicense()) {
-            return;
+            return 0 ;
         }
         long old = System.currentTimeMillis();
         // Load source PDF file
@@ -43,5 +46,6 @@ public class PdfToWord {
         doc.save(outFile, saveOptions);
         long now = System.currentTimeMillis();
         Out.print(inFile, outFile, now, old);
+        return new File(outFile).length();
     }
 }

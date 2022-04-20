@@ -1,4 +1,4 @@
-package com.yrnet.viewweb.common.enums;
+package com.yrnet.viewweb.common.constant;
 
 /**
  * @author dengbp

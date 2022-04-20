@@ -74,7 +74,7 @@ public class ConvertLog implements Serializable {
     private Long createTime;
 
     /**
-     * 转换状态 0成功 1失败
+     * 转换状态 转换状态 0成功 1处理中 2失败
      */
     private Integer state;
 
@@ -93,8 +93,8 @@ public class ConvertLog implements Serializable {
 
     public ConvertLogResponse transformToRes(){
         return ConvertLogResponse.builder().state(state)
-                .fileSize(newFileSize)
-                .fileName(newFileName)
+                .fileSize(fileSize)
+                .fileName(fileName)
                 .createTime(createTime)
                 .fileId(id)
                 .allow(allow)

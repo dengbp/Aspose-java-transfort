@@ -1,15 +1,15 @@
 package com.yrnet.transfer.business.transfer.service;
 
+import com.yrent.common.constant.ConvertType;
+import com.yrent.common.constant.FileSuffixConstant;
 import com.yrnet.transfer.business.transfer.dto.TransferRequest;
-import com.yrnet.transfer.business.transfer.dto.TransferResponse;
+import com.yrnet.transfer.business.transfer.dto.ConvertResponse;
 import com.yrnet.transfer.business.transfer.file.convert.ExcelToPdf;
-import com.yrnet.transfer.business.transfer.file.convert.ExcelToPic;
 import com.yrnet.transfer.business.transfer.file.convert.PdfToWord;
 import com.yrnet.transfer.business.transfer.file.convert.WordToPdf;
 import com.yrnet.transfer.common.exception.TransferException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import com.yrnet.transfer.business.transfer.constant.ConvertType;
 
 /**
  * @author dengbp
@@ -21,23 +21,35 @@ import com.yrnet.transfer.business.transfer.constant.ConvertType;
 @Slf4j
 public class FormatConvertService {
 
-    public TransferResponse convert(TransferRequest transferReq)throws TransferException{
+    private static  Integer FAIL = 2;
+    private static Integer SUCCESS = 0;
+
+    public ConvertResponse convert(TransferRequest transferReq)throws TransferException{
+        ConvertResponse response = ConvertResponse.builder().fileId(transferReq.getFileId()).fileSize(0L).state(FAIL).build();
         ConvertType type = ConvertType.getByCode((char)transferReq.getToType().intValue());
-        String outPath = "";
-        String fileName = "";
-        String fullPath = outPath.concat(fileName);
+        String fileName = transferReq.getFileName().substring(0,transferReq.getFileName().lastIndexOf("."));
+        String fullPath = transferReq.getFilePath().substring(0,transferReq.getFilePath().lastIndexOf(transferReq.getFileName())).concat(fileName);
+        long fileSize;
         switch (type){
             case word_to_pdf:
-                WordToPdf.wordToPdf(transferReq.getFilePath(),fullPath);
+                fullPath = fullPath.concat(FileSuffixConstant.PDF);
+                fileSize = WordToPdf.wordToPdf(transferReq.getFilePath(),fullPath);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
                 break;
             case pdf_to_word:
-                PdfToWord.pdfToDoc(transferReq.getFilePath(),fullPath);
+                fullPath = fullPath.concat(FileSuffixConstant.DOC);
+                fileSize = PdfToWord.pdfToDoc(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.DOC));
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
                 break;
             case pdf_to_docx:
-                PdfToWord.pdfToDOCX(transferReq.getFilePath(),fullPath);
+                fullPath = fullPath.concat(FileSuffixConstant.DOCX);
+                fileSize = PdfToWord.pdfToDOCX(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.DOCX));
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
                 break;
             case excel_to_pdf:
-                ExcelToPdf.excelToPdf(transferReq.getFilePath(),fullPath);
+                fullPath = fullPath.concat(FileSuffixConstant.PDF);
+                fileSize = ExcelToPdf.excelToPdf(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.PDF));
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
                 break;
             case pdf_to_excel:
 
@@ -73,45 +85,13 @@ public class FormatConvertService {
                 log.warn("no type match!");
                 break;
         }
+       return response;
+    }
 
-
-        String targetPath = "/Users/dengbp/Downloads/doc-sys/transfer/pdf/";
-        /*String path1 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-QCC2-mini异常处理规范1.1.doc";
-        String fileName1 = "模板-QCC2-mini异常处理规范1.1.pdf";
-        docToPdf(path1, targetPath+fileName1);
-        System.out.println(111111);
-
-        String path2 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-LL-SP-DIS30216.doc";
-        String fileName2 = "模板-LL-SP-DIS30216.pdf";
-        docToPdf(path2, targetPath+fileName2);
-        System.out.println(222222);*/
-
-
-        String path3 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-ENG4-.xlsx";
-        String fileName3 = "模板-ENG4.pdf";
-        ExcelToPdf.excelToPdf(path3, targetPath+fileName3);
-        System.out.println(333333);
-
-        String fileName31 = "模板-ENG4.png";
-        ExcelToPic.excelToPdf(path3,targetPath+fileName31);
-
-       /* String  path4 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-DIS3-1230.xlsx";
-        String fileName4 = "模板-DIS3-1230.pdf";
-        excelToPdf(path4, targetPath+fileName4);
-        System.out.println(444444);
-
-
-        String  path5 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-ENG2点胶目检作业指导书.pptx";
-        String fileName5 = "模板-ENG2点胶目检作业指导书.pdf";
-        pptToPdf(path5, targetPath+fileName5);
-        System.out.println(555555);
-
-
-        String  path6 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-ENG3-SMT照明维修作业指导书-1.5.pptx";
-        String fileName6 = "模板-ENG3-SMT照明维修作业指导书-1.5.pdf";
-        pptToPdf(path6, targetPath+fileName6);
-        System.out.println(666666);*/
-
-       return TransferResponse.builder().build();
+    private void successResponse(ConvertResponse response, String fileName, String path, long fileSize){
+        response.setState(SUCCESS);
+        response.setFileName(fileName);
+        response.setFilePath(path);
+        response.setFileSize(fileSize);
     }
 }

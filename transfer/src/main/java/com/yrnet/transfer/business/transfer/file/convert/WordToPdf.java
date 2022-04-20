@@ -18,9 +18,9 @@ import java.io.FileOutputStream;
 public class WordToPdf {
 
 
-    public static void wordToPdf(String inFile, String outFile) {
+    public static long wordToPdf(String inFile, String outFile) {
         if (!com.yrnet.transfer.business.transfer.file.License.getWordLicense()) {
-            return;
+            return 0;
         }
         try {
 
@@ -34,10 +34,13 @@ public class WordToPdf {
             System.out.println("开始解析word文档" + inFile);
             doc.save(os, SaveFormat.PDF);
             long now = System.currentTimeMillis();
+            log.info("target file size:{}",file.length());
             os.close();
             Out.print(inFile, outFile, now, old);
+            return file.length();
         } catch (Exception e) {
             log.error(inFile + "转换失败，请重试",e);
+            return 0;
         }
     }
 }

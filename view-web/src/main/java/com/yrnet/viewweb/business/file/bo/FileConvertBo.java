@@ -1,6 +1,7 @@
 package com.yrnet.viewweb.business.file.bo;
 
 import com.yrnet.viewweb.business.file.entity.ConvertLog;
+import com.yrnet.viewweb.common.utils.DateUtil;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +26,9 @@ public class FileConvertBo {
         log.setFileName(file.getOriginalFilename());
         log.setFileSize(file.getSize());
         log.setUserOpenId(openId);
-        log.setFileSuffix(file.getOriginalFilename().substring(file.getName().lastIndexOf(".")));
+        log.setFileSuffix(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
         log.setToType(toType);
+        log.setCreateTime(Long.parseLong(DateUtil.current_yyyyMMddHHmmss()));
         return log;
     }
 }

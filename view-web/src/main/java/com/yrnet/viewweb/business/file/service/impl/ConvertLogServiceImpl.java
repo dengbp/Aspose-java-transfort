@@ -1,11 +1,12 @@
 package com.yrnet.viewweb.business.file.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yrnet.viewweb.business.file.bo.FileConvertBo;
 import com.yrnet.viewweb.business.file.dto.ConvertLogRequest;
 import com.yrnet.viewweb.business.file.dto.ConvertLogResponse;
 import com.yrnet.viewweb.business.file.dto.TransferRequest;
-import com.yrnet.viewweb.business.file.dto.TransferResponse;
+import com.yrnet.viewweb.business.file.dto.ConvertResponse;
 import com.yrnet.viewweb.business.file.entity.ConvertLog;
 import com.yrnet.viewweb.business.file.mapper.ConvertLogMapper;
 import com.yrnet.viewweb.business.file.service.IConvertLogService;
@@ -14,15 +15,16 @@ import com.yrnet.viewweb.business.file.service.TransferApi;
 import com.yrnet.viewweb.business.login.entity.WxUser;
 import com.yrnet.viewweb.business.login.service.WxUserService;
 import com.yrnet.viewweb.common.exception.DocumentException;
+import com.yrnet.viewweb.common.http.TransferResponse;
 import com.yrnet.viewweb.common.properties.ViewWebProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -39,6 +41,7 @@ public class ConvertLogServiceImpl extends ServiceImpl<ConvertLogMapper, Convert
     private TransferApi transferApi;
     @Autowired
     private ConvertLogMapper convertLogMapper;
+    private static  Integer FAIL = 2;
 
 
 
@@ -58,15 +61,28 @@ public class ConvertLogServiceImpl extends ServiceImpl<ConvertLogMapper, Convert
             ConvertLog log = bo.builderEntity();
             log.setFilePath(storage(bo.getFile()));
             convertLogMapper.insert(log);
-            TransferResponse tr = transferApi.convert(TransferRequest.builder().fileId(log.getId()).filePath(log.getFilePath()).fileName(log.getFileName()).toType(log.getToType()).build());
+            ConvertLogResponse response = log.transformToRes();
+            response.setCreateTime(log.getCreateTime());
+            TransferResponse tfResponse = transferApi.convert(TransferRequest.builder().fileId(log.getId()).filePath(log.getFilePath()).fileName(log.getFileName()).toType(log.getToType()).build());
+            if(!tfResponse.isNormal()){
+                log.setState(FAIL);
+                this.updateById(log);
+                response.setState(FAIL);
+                response.setFileSize(0L);
+                return response;
+            }
+            ConvertResponse tr = JSONObject.parseObject(JSONObject.toJSONString(tfResponse.get("data")),ConvertResponse.class);
             log.setNewFilePath(tr.getFilePath());
             log.setNewFileName(tr.getFileName());
             log.setNewFileSize(tr.getFileSize());
             log.setId(tr.getFileId());
             log.setState(tr.getState());
             this.updateById(log);
-            ConvertLogResponse response = log.transformToRes();
             response.setUrl(viewWebProperties.getUrl_base()+ "/" +tr.getFileName());
+            response.setState(tr.getState());
+            response.setFileName(tr.getFileName());
+            response.setFileId(tr.getFileId());
+            response.setFileSize(tr.getFileSize());
             return response;
         }catch (Exception e) {
             log.error(e.getMessage(),e);
