@@ -13,7 +13,7 @@ public class Out {
 
     public static void print(String inPath,String outPath,long now,long old){
        double time = (now - old) / 1000.0;
-        log.info("源文件："+inPath);
+        log.info("源文件："+inPath+",N");
         log.info("现文件："+outPath);
         log.info("转换成功,共耗时：" + time+ "秒");
     }

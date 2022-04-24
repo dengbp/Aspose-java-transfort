@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class TransferRequest {
     private Long fileId;
+    /** 源文件名，多个逗号分开 */
     @NotNull
     private String filePath;
 

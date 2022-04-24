@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -58,8 +59,13 @@ public class ConvertLogServiceImpl extends ServiceImpl<ConvertLogMapper, Convert
     @Override
     public ConvertLogResponse handle(FileConvertBo bo) throws DocumentException {
         try {
+            bo.setFile(bo.getFiles()[0]);
+            StringBuffer filePaths = new StringBuffer();
+            for (MultipartFile f : bo.getFiles()){
+                filePaths.append(storage(f)).append(",");
+            }
             ConvertLog log = bo.builderEntity();
-            log.setFilePath(storage(bo.getFile()));
+            log.setFilePath(filePaths.substring(0,filePaths.length() - 1));
             convertLogMapper.insert(log);
             ConvertLogResponse response = log.transformToRes();
             response.setCreateTime(log.getCreateTime());
@@ -78,7 +84,10 @@ public class ConvertLogServiceImpl extends ServiceImpl<ConvertLogMapper, Convert
             log.setId(tr.getFileId());
             log.setState(tr.getState());
             this.updateById(log);
-            response.setUrl(viewWebProperties.getUrl_base()+ "/" +tr.getFileName());
+            List<String> paths = Arrays.asList(tr.getFilePath().split(","));
+            StringBuffer newFilePaths = new StringBuffer();
+            paths.forEach(path->newFilePaths.append(viewWebProperties.getUrl_base()).append(path.substring(path.lastIndexOf("/"))).append(","));
+            response.setUrl(newFilePaths.substring(0,newFilePaths.length() - 1));
             response.setState(tr.getState());
             response.setFileName(tr.getFileName());
             response.setFileId(tr.getFileId());
@@ -106,17 +115,22 @@ public class ConvertLogServiceImpl extends ServiceImpl<ConvertLogMapper, Convert
         if(logs == null){
             return response;
         }
-        logs.forEach(l->
+        logs.forEach(l->{
+            List<String> paths = Arrays.asList(l.getNewFilePath().split(","));
+            StringBuffer newFilePaths = new StringBuffer();
+            paths.forEach(path->newFilePaths.append(viewWebProperties.getUrl_base()).append(path.substring(path.lastIndexOf("/"))).append(","));
             response.add(ConvertLogResponse.builder()
-                    .allow(0)
-                    .createTime(l.getCreateTime())
-                    .fileId(l.getId())
-                    .url(viewWebProperties.getFile_path()+ "/" + l.getNewFileName())
-                    .useName(user.getWxUserName())
-                    .fileName(l.getFileName())
-                    .fileSize(l.getFileSize())
-                    .state(l.getState()
-                    ).build())
+                            .allow(0)
+                            .createTime(l.getCreateTime())
+                            .fileId(l.getId())
+                            .url(newFilePaths.substring(0,newFilePaths.length() - 1))
+                            .useName(user.getWxUserName())
+                            .fileName(l.getFileName())
+                            .fileSize(l.getFileSize())
+                            .state(l.getState()
+                            ).build());
+                }
+
         );
         return response;
     }

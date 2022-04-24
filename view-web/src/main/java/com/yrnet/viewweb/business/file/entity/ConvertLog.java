@@ -25,6 +25,8 @@ public class ConvertLog implements Serializable {
 
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
+
+    private Long batchId;
     /**
      * 用户id
      */
@@ -41,7 +43,7 @@ public class ConvertLog implements Serializable {
     private String fileSuffix;
 
     /**
-     * 源文件路径
+     * 源文件路径(含文件名),多个逗号分开
      */
     private String filePath;
 
@@ -64,7 +66,7 @@ public class ConvertLog implements Serializable {
 
 
     /**
-     * 新文件路径
+     * 新文件路径(含文件名),多个逗号分开
      */
     private String newFilePath;
 

@@ -2,6 +2,7 @@ package com.yrnet.viewweb.business.file.controller;
 
 import com.yrent.common.constant.ConvertType;
 import com.yrent.common.constant.FileSuffixConstant;
+import com.yrent.common.utils.SnowFlakeUtil;
 import com.yrnet.viewweb.business.file.bo.FileConvertBo;
 import com.yrnet.viewweb.business.file.dto.ConvertLogRequest;
 import com.yrnet.viewweb.business.file.service.IConvertLogService;
@@ -32,7 +33,7 @@ public class ConvertController {
 
     /**
      * Description 转换文档上传
-     * @param file 文件
+     * @param file 文件(多文件主要用于图片转换)
      * @param toType 转换成目标文档类型：1转成图片；2转成word;3转成pdf;...
      * @param openId 用户id
      * @return com.yr.net.app.base.dto.RestResult
@@ -43,7 +44,7 @@ public class ConvertController {
     @ResponseBody
     @ControllerEndpoint(operation = "用户多媒体上传", exceptionMessage = "用户多媒体上传失败")
     @Log("用户转换文档上传")
-    public ViewWebResponse upload(@RequestParam("file") MultipartFile file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
+    public ViewWebResponse upload(@RequestParam("file") MultipartFile[] file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
         ViewWebResponse response = new ViewWebResponse().success();
         if (file == null) {
             return response.fail().message("上传失败，文件为空");
@@ -51,11 +52,20 @@ public class ConvertController {
         if (StringUtils.isBlank(openId)){
             return response.fail().message("openId为空");
         }
-        validator(file,toType,response);
-        if (!response.isNormal()){
-            return response;
+        for (MultipartFile f : file){
+            validator(f,toType,response);
+            if (!response.isNormal()){
+                return response;
+            }
         }
-        return response.message("请求处理成功").data(convertLogService.handle(FileConvertBo.builder().file(file).openId(openId).toType(toType).build()));
+        return response.message("请求处理成功").data(convertLogService.handle(
+                FileConvertBo.builder()
+                        .batchId(SnowFlakeUtil.creater.nextId())
+                        .files(file)
+                        .openId(openId)
+                        .toType(toType)
+                        .build())
+        );
     }
 
     private void validator(MultipartFile file,int toType,ViewWebResponse response){

@@ -4,12 +4,15 @@ import com.yrent.common.constant.ConvertType;
 import com.yrent.common.constant.FileSuffixConstant;
 import com.yrnet.transfer.business.transfer.dto.TransferRequest;
 import com.yrnet.transfer.business.transfer.dto.ConvertResponse;
-import com.yrnet.transfer.business.transfer.file.convert.ExcelToPdf;
-import com.yrnet.transfer.business.transfer.file.convert.PdfToWord;
-import com.yrnet.transfer.business.transfer.file.convert.WordToPdf;
+import com.yrnet.transfer.business.transfer.file.convert.*;
 import com.yrnet.transfer.common.exception.TransferException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author dengbp
@@ -28,49 +31,69 @@ public class FormatConvertService {
         ConvertResponse response = ConvertResponse.builder().fileId(transferReq.getFileId()).fileSize(0L).state(FAIL).build();
         ConvertType type = ConvertType.getByCode((char)transferReq.getToType().intValue());
         String fileName = transferReq.getFileName().substring(0,transferReq.getFileName().lastIndexOf("."));
-        String fullPath = transferReq.getFilePath().substring(0,transferReq.getFilePath().lastIndexOf(transferReq.getFileName())).concat(fileName);
+        List<String> inFiles = Arrays.asList(transferReq.getFilePath().split(","));
+        //目标文件(包含路径，不含文件后缀)
+        final List<String> outFiles = new ArrayList<>();
+        inFiles.forEach(inFile->outFiles.add(inFile.substring(0,inFile.lastIndexOf("."))));
         long fileSize;
+        String outFile;
         switch (type){
             case word_to_pdf:
-                fullPath = fullPath.concat(FileSuffixConstant.PDF);
-                fileSize = WordToPdf.wordToPdf(transferReq.getFilePath(),fullPath);
-                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize = WordToPdf.wordToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_word:
-                fullPath = fullPath.concat(FileSuffixConstant.DOC);
-                fileSize = PdfToWord.pdfToDoc(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.DOC));
-                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
+                outFile = outFiles.get(0).concat(FileSuffixConstant.DOC);
+                fileSize = PdfToWord.pdfToDoc(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_docx:
-                fullPath = fullPath.concat(FileSuffixConstant.DOCX);
-                fileSize = PdfToWord.pdfToDOCX(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.DOCX));
-                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
+                outFile = outFiles.get(0).concat(FileSuffixConstant.DOCX);
+                fileSize = PdfToWord.pdfToDOCX(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case excel_to_pdf:
-                fullPath = fullPath.concat(FileSuffixConstant.PDF);
-                fileSize = ExcelToPdf.excelToPdf(transferReq.getFilePath(),fullPath.concat(FileSuffixConstant.PDF));
-                successResponse(response,fileName.concat(FileSuffixConstant.PDF),fullPath,fileSize);
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize = ExcelToPdf.excelToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_excel:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.EXCEL);
+                fileSize =  PdfToExcel.pdfToExcel(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.EXCEL),outFile,fileSize);
                 break;
             case ppt_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize =  PptToPdf.pptToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_ppt:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PPT);
+                fileSize =  PdfToPpt.pdfToPpt(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PPT),outFile,fileSize);
                 break;
             case jpg_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize =  JpgToPdf.jpgToPdf(inFiles,outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_jpg:
-
+                List<String> outJpg = new ArrayList<>();
+                fileSize =  PdfToJpg.pdfToJpg(transferReq.getFilePath(),outJpg);
+                String outJpgPaths = outJpg.stream().collect(Collectors.joining(","));
+                successResponse(response,fileName.concat(FileSuffixConstant.JPG),outJpgPaths,fileSize);
                 break;
             case png_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize =  PngToPdf.pngToPdf(inFiles,outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case pdf_to_png:
-
+                List<String> outPng = new ArrayList<>();
+                fileSize =  PdfToPng.pdfToPng(transferReq.getFilePath(),outPng);
+                String outPngPaths = outPng.stream().collect(Collectors.joining(","));
+                successResponse(response,fileName.concat(FileSuffixConstant.PNG),outPngPaths,fileSize);
                 break;
             case docx_to_pdf:
 

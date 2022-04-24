@@ -13,6 +13,7 @@ import com.yrnet.viewweb.common.entity.ViewWebResponse;
 import com.yrnet.viewweb.common.utils.HttpClientUtil;
 import com.yrnet.viewweb.common.utils.SeqUtil;
 import com.yrnet.viewweb.common.utils.WeChatGetUserInfoUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +31,7 @@ import java.time.format.DateTimeFormatter;
  */
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class LoginController {
 
     private final WxUserService wxUserService;
@@ -53,26 +55,30 @@ public class LoginController {
         String apiUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + wxConfig.getAppId() + "&secret=" + wxConfig.getSecret() + "&js_code=" + loginDto.getCode() + "&grant_type=authorization_code";
         String responseBody = HttpClientUtil.doGet(apiUrl);
         JSONObject jsonObject = JSON.parseObject(responseBody);
-        System.out.println(jsonObject.toJSONString());
+        log.info("get api.weixin.qq.com/sns/jscode2session result:{}",jsonObject.toJSONString());
         WxUser wxUser = new WxUser();
         UserRelation userRelation = new UserRelation();
-        if (StringUtils.isNotBlank(jsonObject.getString("openid"))
-                && StringUtils.isNotBlank(jsonObject.getString("session_key"))) {
+        String openId = jsonObject.getString("openid");
+        String sessionKey = jsonObject.getString("session_key");
+        if (StringUtils.isNotBlank(openId)
+                && StringUtils.isNotBlank(sessionKey)) {
             JSONObject userInfoJson= WeChatGetUserInfoUtil.getUserInfo(loginDto.getEncryptedData(),jsonObject.getString("session_key"),loginDto.getIv());
             if (userInfoJson == null){
                 return response.fail().message("解析用户信息失败");
             }
+            log.info("WxUser:{}",userInfoJson.toString());
             wxUser.getWxUser(userInfoJson);
+            wxUser.setWxOpenId(openId);
             WxUser wxUserFromData = wxUserService.queryByOpenId(wxUser.getWxOpenId());
             if (wxUserFromData == null) {
                 wxUser.setWxUserId(SeqUtil.nextId());
-                wxUser.setStatus(1);
+                wxUser.setStatus(0);
                 wxUser.setAuthorityId(1);
                 wxUser.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
                 wxUserService.insert(wxUser);
                 userRelation.setUserId(SeqUtil.nextId());
                 userRelation.setType(1);
-                userRelation.setWxOpenId(wxUser.getWxOpenId());
+                userRelation.setWxOpenId(openId);
                 userRelationService.insert(userRelation);
             } else {
                 wxUser = wxUserService.queryByOpenId(wxUser.getWxOpenId());
