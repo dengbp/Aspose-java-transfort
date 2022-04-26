@@ -96,13 +96,19 @@ public class FormatConvertService {
                 successResponse(response,fileName.concat(FileSuffixConstant.PNG),outPngPaths,fileSize);
                 break;
             case docx_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize =  DocxToPdf.wordToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case odt_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize =  OdtToPdf.odtToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case doc_to_pdf:
-
+                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+                fileSize = WordToPdf.wordToPdf(transferReq.getFilePath(),outFile);
+                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             default:
                 log.warn("no type match!");
