@@ -1,18 +1,20 @@
 package com.yrnet.viewweb.business.bill.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.yrnet.viewweb.business.bill.entity.UserAccount;
 import com.yrnet.viewweb.business.bill.service.IUserAccountService;
+import com.yrnet.viewweb.business.custom.service.IVipInfoService;
 import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.entity.ViewWebResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * @author dengbp
@@ -24,14 +26,36 @@ public class UserAccountController {
     @Resource
     private IUserAccountService userAccountService;
 
+    @Resource
+    private IVipInfoService vipInfoService;
+
 
     @GetMapping("info")
     @ResponseBody
-    @ControllerEndpoint(operation = "支付接口", exceptionMessage = "支付失败")
-    @Log("帐号信息查询")
+    @ControllerEndpoint(operation = "去水印支付接口", exceptionMessage = "支付失败")
+    @Log("去水印帐号信息查询")
     public ViewWebResponse info(@NotBlank(message = "{required}")  String userId) {
         UserAccount userAccount = userAccountService.getByUserId(userId);
         return new ViewWebResponse().success().data(userAccount==null?new UserAccount():userAccount);
+    }
+
+    /**
+     * Description 文档转换
+     * @param map
+     * @return com.yrnet.viewweb.common.entity.ViewWebResponse
+     * @Author dengbp
+     * @Date 1:38 PM 4/27/22
+     **/
+    @PostMapping("state")
+    @ResponseBody
+    @ControllerEndpoint(operation = "帐号会员状态查询接口", exceptionMessage = "帐号会员状态查询失败")
+    @Log("帐号会员状态查询")
+    public ViewWebResponse state(@RequestBody Map map) {
+        String openId = (String)map.get("openId");
+        if (StringUtils.isBlank(openId)){
+            return new ViewWebResponse().fail().message("openId is null");
+        }
+        return new ViewWebResponse().success().data(vipInfoService.getVipInf(openId));
     }
 
 }

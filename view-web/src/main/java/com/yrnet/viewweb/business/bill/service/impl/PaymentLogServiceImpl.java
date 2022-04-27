@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yrnet.viewweb.business.bill.dto.PayMentReqDto;
 import com.yrnet.viewweb.business.bill.dto.PaymentLogReqDto;
-import com.yrnet.viewweb.business.bill.dto.PaymentLogRespDto;
+import com.yrnet.viewweb.business.bill.dto.PaymentLogResDto;
 import com.yrnet.viewweb.business.bill.entity.OrderPay;
 import com.yrnet.viewweb.business.bill.entity.PaymentLog;
 import com.yrnet.viewweb.business.bill.entity.PlanService;
@@ -12,6 +12,7 @@ import com.yrnet.viewweb.business.bill.mapper.PaymentLogMapper;
 import com.yrnet.viewweb.business.bill.service.IPaymentLogService;
 import com.yrnet.viewweb.business.bill.service.IPlanServiceService;
 import com.yrnet.viewweb.business.bill.service.IUserAccountService;
+import com.yrnet.viewweb.business.custom.service.IVipInfoService;
 import com.yrnet.viewweb.common.exception.DocumentException;
 import com.yrnet.viewweb.common.service.ISeqService;
 import com.yrnet.viewweb.common.utils.DateUtil;
@@ -44,7 +45,7 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
     private IPlanServiceService planServiceService;
 
     @Resource
-    private IUserAccountService userAccountService;
+    private IVipInfoService vipInfoService;
 
     @Autowired
     private ISeqService seqService;
@@ -67,68 +68,42 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
 
     @Override
     public Map<String, Object> wxPayment(PayMentReqDto reqDto) throws Exception {
-        /**
-         * 随机字符串
-         */
+        PlanService plan = planServiceService.getById(reqDto.getProducerId());
+        if (plan == null){
+            return null;
+        }
+        if (plan.getAmount().longValue() > Long.valueOf(reqDto.getTotal_fee())){
+            return null;
+        }
+        /** 随机字符串 */
         String nonce_str = generateNonceStr();
-
-        /**
-         * 订单编号
-         */
+        /** 订单编号 */
         String out_trade_no = "";
-
-        /**
-         * 订单总金额，单位为分（这个注意必须String类型）
-         */
+        /** 订单总金额，单位为分（这个注意必须String类型） */
         DecimalFormat df1 = new DecimalFormat("0");
-        String total_fee = df1.format(Double.valueOf(reqDto.getTotal_fee()) * 100);
-
-        /**
-         * 获取当前ip
-         */
+        String total_fee = df1.format(Long.valueOf(reqDto.getTotal_fee()));
+        /**  获取当前ip */
         String spbill_create_ip = getShowIpv4();
-        String body = "去印服务";
-
-        /**
-         * 小程序id
-         */
+        String body = "文档服务";
+        /** 小程序id */
         String AppId = appid;
-
-        /**
-         * 商户id
-         */
+        /** 商户id */
         String MchId = mchid;
-
-        /**
-         * 通知地址(微信官方上找的实例能用就行)
-         */
+        /** 通知地址(微信官方上找的实例能用就行) */
         String NotifyUrl = notifyUrl;
-
-        /**
-         * 商户密钥
-         */
+        /** 商户密钥 */
         String key = keyValue;
-
-        /**
-         * 构造成类
-         */
+        /**  构造成类 */
         OrderPay orderPay = new OrderPay(AppId, MchId, nonce_str, body, out_trade_no, total_fee, spbill_create_ip, NotifyUrl, "JSAPI", reqDto.getOpenId(), key, "https://api.mch.weixin.qq.com/pay/unifiedorder");
-
-        /**
-         * 保存支付单到本地数据库中
-         */
+        /** 保存支付单到本地数据库中 */
         PaymentLog paymentLog = new PaymentLog();
         paymentLog.setId(seqService.getSeq());
         paymentLog.setUserId(reqDto.getOpenId());
         paymentLog.setProducerId(reqDto.getProducerId());
         paymentLog.setProducerName(reqDto.getProducerName());
-
         BigDecimal amount = new BigDecimal(total_fee);
         paymentLog.setAmount(amount);
-
-        /**
-         * 0待支付，1失败，2成功
-         */
+        /** 0待支付，1失败，2成功 */
         paymentLog.setStatus(0);
         paymentLog.setRemark(body);
         paymentLog.setCreateTime(Long.parseLong(DateUtil.current_yyyyMMddHHmmss()));
@@ -138,16 +113,10 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
             int month = cal.get(Calendar.MONTH) + 1;
             String showMonth = month > 10 ? "" + month : "0" + month;
             int year = cal.get(Calendar.YEAR);
-
             orderPay.setOut_trade_no(year + "" + showMonth + "" + paymentLog.getId());
-            /**
-             * 调用方法，得到统一下单地数据
-             */
+            /** 调用方法，得到统一下单地数据 */
             Map<String, Object> pac = PayUtil.wxPay(orderPay);
-
-            /**
-             * 直接返回给前端，前端调用即可
-             */
+            /** 直接返回给前端，前端调用即可 */
             return pac;
         } else {
             return null;
@@ -179,7 +148,7 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
              */
             paymentLog.setStatus(2);
             this.updateById(paymentLog);
-            userAccountService.upInsert(paymentLog.getUserId(),paymentLog.getAmount().intValue());
+            vipInfoService.upInsert(paymentLog.getUserId(),paymentLog.getProducerId());
         } else {
             resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
                     + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
@@ -189,11 +158,11 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
     }
 
     @Override
-    public List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException {
+    public List<PaymentLogResDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException {
         LambdaQueryWrapper<PaymentLog> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(PaymentLog::getStatus,2).eq(PaymentLog::getUserId,reqDto.getUserId()).orderByDesc(PaymentLog::getCreateTime);
         List<PaymentLog> logs = this.list(queryWrapper);
-        List<PaymentLogRespDto> respDtos = new ArrayList<>();
+        List<PaymentLogResDto> respDtos = new ArrayList<>();
         if (logs.isEmpty()){
             return respDtos;
         }
@@ -201,11 +170,11 @@ public class PaymentLogServiceImpl extends ServiceImpl<PaymentLogMapper, Payment
         return respDtos;
     }
 
-    private void transToResp(List<PaymentLog> sources,List<PaymentLogRespDto> response){
+    private void transToResp(List<PaymentLog> sources,List<PaymentLogResDto> response){
         sources.forEach(e->{
             PlanService planService = planServiceService.getById(e.getProducerId());
             if(planService != null){
-                PaymentLogRespDto respDto = new PaymentLogRespDto();
+                PaymentLogResDto respDto = new PaymentLogResDto();
                 respDto.setCreateTime(e.getCreateTime());
                 respDto.setEffectiveTime(planService.getEffectiveTime());
                 respDto.setProducerName(e.getProducerName());

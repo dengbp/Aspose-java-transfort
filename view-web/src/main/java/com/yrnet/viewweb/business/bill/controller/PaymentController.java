@@ -7,6 +7,7 @@ import com.yrnet.viewweb.common.annotation.ControllerEndpoint;
 import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.entity.ViewWebResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,6 +22,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/payment")
 @Slf4j
+@Validated
 public class PaymentController {
     @Resource
     private IPaymentLogService iPaymentLogService;

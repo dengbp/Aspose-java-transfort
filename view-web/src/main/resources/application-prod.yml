@@ -43,7 +43,7 @@ spring:
     timeout: 0
 
 pays:
-  appid: wx51e10e9977f1c819
+  appid: wx2bf9532aacc8d208
   mchid: 1503084061
   key: "135300513531592001800212345678dP"
-  notifyurl: "https://gysi.goddesses.net.cn/yr-yinxx/video/payment/wxNotify"
+  notifyurl: "https://doctf.goddesses.net.cn/docapp/payment/wxNotify"

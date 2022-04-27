@@ -43,5 +43,8 @@ public class PlanService implements Serializable {
      */
     private Long createTime;
 
+    /** 0非默认，1默认 */
+    private Integer checked;
+
 
 }

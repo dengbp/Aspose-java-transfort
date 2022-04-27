@@ -59,6 +59,9 @@ public class LoginController {
         WxUser wxUser = new WxUser();
         UserRelation userRelation = new UserRelation();
         String openId = jsonObject.getString("openid");
+        if (StringUtils.isBlank(openId)){
+            return response.fail().message("用户登录失败");
+        }
         String sessionKey = jsonObject.getString("session_key");
         if (StringUtils.isNotBlank(openId)
                 && StringUtils.isNotBlank(sessionKey)) {

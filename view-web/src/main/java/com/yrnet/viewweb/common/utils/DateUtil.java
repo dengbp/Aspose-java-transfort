@@ -162,4 +162,19 @@ public class DateUtil {
             return day2-day1;
         }
     }
+
+
+    public static Long  getAfterMonth(Long inputDate,int number) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_PATTERN);
+        Date date = null;
+        try{
+            date = sdf.parse(inputDate.toString());
+        }catch(Exception e){
+
+        }
+        c.setTime(date);
+        c.add(Calendar.MONTH,number);
+        return Long.parseLong(sdf.format(c.getTime()));
+    }
 }

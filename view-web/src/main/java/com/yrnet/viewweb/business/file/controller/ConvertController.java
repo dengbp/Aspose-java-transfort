@@ -11,11 +11,13 @@ import com.yrnet.viewweb.common.annotation.Log;
 import com.yrnet.viewweb.common.entity.ViewWebResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * @author dengbp
@@ -26,6 +28,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/manager")
 @Slf4j
+@Validated
 public class ConvertController {
 
     @Resource
@@ -44,13 +47,16 @@ public class ConvertController {
     @ResponseBody
     @ControllerEndpoint(operation = "用户多媒体上传", exceptionMessage = "用户多媒体上传失败")
     @Log("用户转换文档上传")
-    public ViewWebResponse upload(@RequestParam("file") MultipartFile[] file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId) {
+    public ViewWebResponse upload(@RequestParam("file") MultipartFile[] file, @RequestParam(value="toType") int toType, @RequestParam(value="openId") String openId,@RequestParam(value="num") Integer num) {
         ViewWebResponse response = new ViewWebResponse().success();
         if (file == null) {
             return response.fail().message("上传失败，文件为空");
         }
         if (StringUtils.isBlank(openId)){
             return response.fail().message("openId为空");
+        }
+        if (num ==  null){
+            return response.fail().message("num为空");
         }
         for (MultipartFile f : file){
             validator(f,toType,response);
@@ -154,14 +160,24 @@ public class ConvertController {
         }
     }
 
-
-
-
     @PostMapping("/doc/log")
     @ResponseBody
     @ControllerEndpoint(operation = "转换记录查询", exceptionMessage = "转换记录查询失败")
     @Log("转换记录查询接口")
     public ViewWebResponse log(@RequestBody @Valid ConvertLogRequest request){
         return new ViewWebResponse().success().data(convertLogService.queryLog(request));
+    }
+
+
+    @PostMapping("/doc/delete")
+    @ResponseBody
+    @ControllerEndpoint(operation = "转换记录删除接口", exceptionMessage = "转换记录删除失败")
+    @Log("转换记录删除接口")
+    public ViewWebResponse delete(@RequestBody Map map){
+        Long id = (Long) map.get("docId");
+        if (id == null){
+            return new ViewWebResponse().fail().message("docId为空");
+        }
+        return new ViewWebResponse().success().data(convertLogService.removeById(id)).message("删除成功");
     }
 }

@@ -3,7 +3,7 @@ package com.yrnet.viewweb.business.bill.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yrnet.viewweb.business.bill.dto.PayMentReqDto;
 import com.yrnet.viewweb.business.bill.dto.PaymentLogReqDto;
-import com.yrnet.viewweb.business.bill.dto.PaymentLogRespDto;
+import com.yrnet.viewweb.business.bill.dto.PaymentLogResDto;
 import com.yrnet.viewweb.business.bill.entity.PaymentLog;
 import com.yrnet.viewweb.common.exception.DocumentException;
 
@@ -28,5 +28,5 @@ public interface IPaymentLogService extends IService<PaymentLog> {
      * @Author dengbp
      * @Date 4:29 PM 2/5/21
      **/
-    List<PaymentLogRespDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException;
+    List<PaymentLogResDto> queryPayLog(PaymentLogReqDto reqDto) throws DocumentException;
 }

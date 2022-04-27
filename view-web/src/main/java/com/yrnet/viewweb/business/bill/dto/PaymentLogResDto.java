@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @date 2/5/21 4:20 PM
  */
 @Data
-public class PaymentLogRespDto implements Serializable {
+public class PaymentLogResDto implements Serializable {
 
     /**
      * 支付商品名称(对应高保真的：会员充值)
