@@ -1,20 +1,15 @@
 package com.yrnet.transfer.business.transfer.file.convert;
 
 import com.aspose.pdf.Document;
-import com.aspose.pdf.SaveFormat;
 import com.yrnet.transfer.business.transfer.file.Out;
 
 import java.io.File;
-import com.aspose.pdf.Document;
+
 import com.aspose.pdf.devices.JpegDevice;
 import com.aspose.pdf.devices.Resolution;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 /**
  * @author dengbp

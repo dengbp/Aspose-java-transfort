@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yrnet.sso.server.dao.LoginLogMapper">
+
+    <insert id="saveLoginLog">
+        insert into cmdb_login_log (user_id,client_ip,login_time) value (#{userId},#{ip},now())
+    </insert>
+
+</mapper>

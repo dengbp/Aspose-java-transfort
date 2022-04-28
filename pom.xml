@@ -17,10 +17,18 @@
     <description>Demo project for Spring Boot</description>
 
     <modules>
+        <!-- 公共包 -->
         <module>common</module>
+        <!-- 服务注册中心 -->
         <module>register-center</module>
+        <!-- 文档转换服务 -->
         <module>transfer</module>
-        <module>view-web</module>
+        <!-- 对外提供http接口小程序业务服务 -->
+        <module>app-web</module>
+        <!-- 登录、鉴权服务(网关) -->
+        <module>sso-server</module>
+        <!-- 用户、权限、菜单管理模块 -->
+        <module>base-admin</module>
     </modules>
 
 

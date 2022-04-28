@@ -3,8 +3,6 @@ package com.yrnet.transfer.business.transfer.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * @author dengbp
  * @ClassName TransferReq

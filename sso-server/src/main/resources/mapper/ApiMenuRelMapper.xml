@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yrnet.sso.server.dao.ApiMenuRelMapper">
+
+    <select id="queryApiInfo" resultType="java.util.Map">
+        SELECT
+            a.api_id apiId,
+            a.name,
+            a.url
+        FROM
+            cmdb_api_info a
+        LEFT JOIN cmdb_api_menu_rel m ON a.api_id = m.api_id
+        WHERE
+            m.menu_id IN
+            <foreach collection="menuIdList" item="menuId" open="(" separator="," close=")">
+                #{menuId}
+            </foreach>
+        AND a.url = #{url}
+    </select>
+
+</mapper>
