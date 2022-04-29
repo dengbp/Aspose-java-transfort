@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class CodeGenerator {
 
-    private static String projectName = "view-web";
+    private static String projectName = "app-web";
 
     // 数据库 URL
     private static final String URL = "jdbc:mysql://124.220.16.138:3306/yr_document?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -33,7 +33,7 @@ public class CodeGenerator {
     // @author 值
     private static final String AUTHOR = "dengbp";
     // 包的基础路径
-    private static final String BASE_PACKAGE_URL = "com.yrnet.viewweb.business";
+    private static final String BASE_PACKAGE_URL = "com.yrnet.appweb.business";
     // xml 文件模板
     private static final String XML_MAPPER_TEMPLATE_PATH = "generator/templates/mapper.xml";
     private static final String XML_MAPPER_TEMPLATE_PATH_CUSTOM = "generator/templates/mapper.xml.ftl";

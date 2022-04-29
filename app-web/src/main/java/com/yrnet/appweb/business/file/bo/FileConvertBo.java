@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.util.List;
+
 /**
  * @author dengbp
  * @ClassName FileConvertBo
@@ -16,19 +19,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class FileConvertBo {
 
-    private MultipartFile file;
-    private MultipartFile[] files;
-    private Long batchId;
+    private File file;
+    private List<File> files;
     private int toType;
     private String openId;
 
     public ConvertLog builderEntity(){
         ConvertLog log = new ConvertLog();
-        log.setBatchId(batchId);
-        log.setFileName(file.getOriginalFilename());
-        log.setFileSize(file.getSize());
+        log.setFileName(file.getName());
+        log.setFileSize(file.length());
         log.setUserOpenId(openId);
-        log.setFileSuffix(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+        String path = file.getAbsolutePath();
+        log.setFileSuffix(path.substring(path.lastIndexOf(".")));
         log.setToType(toType);
         log.setCreateTime(Long.parseLong(DateUtil.current_yyyyMMddHHmmss()));
         return log;

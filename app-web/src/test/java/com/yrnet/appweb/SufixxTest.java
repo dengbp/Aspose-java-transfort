@@ -1,6 +1,11 @@
 package com.yrnet.appweb;
 
 import junit.framework.TestCase;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * @author dengbp
  * @ClassName SufixxTest
@@ -10,7 +15,10 @@ import junit.framework.TestCase;
 public class SufixxTest extends TestCase{
 
     public void testSuf(){
+
+
         String fileName = "report.pdf";
         System.out.println(fileName.substring(fileName.lastIndexOf(".")));
     }
+
 }

@@ -14,7 +14,7 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 @EnableEurekaClient
 @EnableFeignClients
 @EnableTransactionManagement
-@MapperScan("com.yrnet.viewweb.**.mapper")
+@MapperScan("com.yrnet.appweb.**.mapper")
 public class AppWebApplication {
 
     public static void main(String[] args) {

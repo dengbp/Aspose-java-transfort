@@ -42,4 +42,7 @@ public class ConvertLogResponse implements Serializable {
 
     /** 新文件大小，单位kB */
     private Long fileSize;
+
+    /** 本次转换标识 */
+    private Long batchId;
 }

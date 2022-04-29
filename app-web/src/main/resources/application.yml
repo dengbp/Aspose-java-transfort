@@ -10,7 +10,7 @@ spring:
     active: @profileActive@
 
   application:
-    name: view-web
+    name: docapp
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -26,7 +26,7 @@ spring:
 
 mybatis-plus:
   # 实体类扫描路径
-  type-aliases-package: com.yrnet.viewweb.business.entity,com.yrnet.viewweb.business.login.entity,com.yrnet.viewweb.system.entity
+  type-aliases-package: com.yrnet.appweb.business.entity,com.yrnet.appweb.business.login.entity,com.yrnet.appweb.system.entity
   # xml 扫描路径
   mapper-locations: classpath:mapper/**/*.xml
   configuration:

@@ -34,4 +34,5 @@ public interface IVipInfoService extends IService<VipInfo> {
 
     void upInsert(String userId,Integer producerId)throws DocumentException;
 
+
 }

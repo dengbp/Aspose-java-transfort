@@ -26,7 +26,6 @@ public class ConvertLog implements Serializable {
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
 
-    private Long batchId;
     /**
      * 用户id
      */
