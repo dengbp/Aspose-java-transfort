@@ -48,19 +48,7 @@ public interface IConvertService extends IService<ConvertLog> {
 
     boolean canFreeTrial(String openId)throws DocumentException;
 
-    /**
-     * Description 校验会员是否已过期
-     * @param openId
-     * @return boolean  true:已过期；false:未过期
-     * @throws DocumentException
-     * @Author dengbp
-     * @Date 1:27 PM 4/29/22
-     **/
 
-    boolean vipIsExpired(String openId)throws DocumentException;
-
-
-    boolean isVipUser(String openId)throws DocumentException;
 
 
 }

@@ -73,7 +73,7 @@ public class FormatConvertService {
                 fileSize =  PdfToPpt.pdfToPpt(transferReq.getFilePath(),outFile);
                 successResponse(response,fileName.concat(FileSuffixConstant.PPT),outFile,fileSize);
                 break;
-            case jpg_to_pdf:
+            case pic_to_pdf:
                 outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
                 fileSize =  JpgToPdf.jpgToPdf(inFiles,outFile);
                 successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
@@ -84,11 +84,11 @@ public class FormatConvertService {
                 String outJpgPaths = outJpg.stream().collect(Collectors.joining(","));
                 successResponse(response,fileName.concat(FileSuffixConstant.JPG),outJpgPaths,fileSize);
                 break;
-            case png_to_pdf:
-                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
-                fileSize =  PngToPdf.pngToPdf(inFiles,outFile);
-                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
-                break;
+//            case png_to_pdf:
+//                outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
+//                fileSize =  PngToPdf.pngToPdf(inFiles,outFile);
+//                successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
+//                break;
             case pdf_to_png:
                 List<String> outPng = new ArrayList<>();
                 fileSize =  PdfToPng.pdfToPng(transferReq.getFilePath(),outPng);

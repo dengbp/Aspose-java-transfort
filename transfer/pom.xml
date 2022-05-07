@@ -82,7 +82,7 @@
             <version>2.0.6</version>
         </dependency>
 
-
+        <!-- 文档转换 -->
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose.slides</artifactId>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-cells</artifactId>
-            <version>8.5.2</version>
+            <version>22.3.2</version>
         </dependency>
 
         <dependency>
@@ -101,12 +101,16 @@
             <version>14.9.0</version>
         </dependency>
 
+        <!-- pdf转word可用 -->
         <dependency>
             <groupId>com.aspose</groupId>
             <artifactId>aspose-pdf</artifactId>
-            <version>17.8.0</version>
+            <version>21.12.3</version>
         </dependency>
 
+
+
+        <!-- 图片识别 -->
         <dependency>
             <groupId>com.asprise.ocr</groupId>
             <artifactId>java-ocr-api</artifactId>
@@ -153,6 +157,17 @@
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
+
+
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf</artifactId>
+            <scope>system</scope>
+            <version>5.4.2</version>
+            <systemPath>/Users/dengbp/Downloads/doc-sys/spire/Spire.Pdf_5.4.2/lib/Spire.Pdf.jar</systemPath>
+        </dependency>
+
+
     </dependencies>
 
     <build>

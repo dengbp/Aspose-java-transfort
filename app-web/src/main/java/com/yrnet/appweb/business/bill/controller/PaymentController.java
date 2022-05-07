@@ -17,8 +17,10 @@ import javax.validation.Valid;
 import java.util.Map;
 
 /**
- * @author dengbp
- */
+ * Description 文档支付服务
+ * @Author dengbp
+ * @Date 4:41 PM 5/6/22
+ **/
 @RestController
 @RequestMapping("/payment")
 @Slf4j
@@ -32,17 +34,18 @@ public class PaymentController {
     @ControllerEndpoint(operation = "支付接口", exceptionMessage = "支付失败")
     @Log("支付接口")
     public ViewWebResponse pay(@RequestBody PayMentReqDto reqDto) {
-        try {
-            Map<String, Object> restMap = iPaymentLogService.wxPayment(reqDto);
-            if (restMap != null) {
-                return new ViewWebResponse().success().data(restMap);
-            } else {
-                return new ViewWebResponse().fail();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ViewWebResponse().fail();
+        return new ViewWebResponse().fail().message("邀请成员公测中,过两天后再充值");
+   //     try {
+//            Map<String, Object> restMap = iPaymentLogService.wxPayment(reqDto);
+//            if (restMap != null) {
+//                return new ViewWebResponse().success().data(restMap);
+//            } else {
+//                return new ViewWebResponse().fail();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new ViewWebResponse().fail();
     }
 
     /**

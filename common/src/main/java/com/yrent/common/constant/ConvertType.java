@@ -11,7 +11,7 @@ public enum ConvertType {
     /** */
     word_to_pdf((char)1,"word转pdf"),
     /** */
-    pdf_to_word((char)2,"pdf转word:2"),
+    pdf_to_word((char)2,"pdf转word"),
     /** */
     excel_to_pdf((char)3,"excel转pdf"),
     /** */
@@ -21,11 +21,11 @@ public enum ConvertType {
     /** */
     pdf_to_ppt((char)6,"pdf转ppt"),
     /** */
-    jpg_to_pdf((char)7,"jpg转pdf"),
+    pic_to_pdf((char)7,"图片转pdf"),
     /** */
     pdf_to_jpg((char)8,"pdf转jpg"),
     /** */
-    png_to_pdf((char)9,"png转pdf"),
+   // png_to_pdf((char)9,"png转pdf"),
     /** */
     pdf_to_png((char)10,"pdf转png"),
     /** */

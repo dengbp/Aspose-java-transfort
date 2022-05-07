@@ -1,5 +1,5 @@
 #! /bin/sh
-name="view-web-0.0.1"
+name="app-web-0.0.1"
 Xmx=512m
 Xms=512m
 Xmn=256m

@@ -17,6 +17,8 @@ public   final class FileSuffixConstant {
     public static String JPG = ".jpg";
     public static String ODT = ".odt";
 
+    public static String PIC_ALL = ".jpg|.jpeg|.png|.bmp|.gif|.tiff|.exif|.wbmp|.mbm";
+    public static String EXCEL_SUF = ".xlsx|.xls";
 
 
 }

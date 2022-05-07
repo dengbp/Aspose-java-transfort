@@ -20,7 +20,7 @@ import java.util.List;
 public class PdfToPng {
     public static long pdfToPng(String inFile, List<String> outFile) {
         long size = 0;
-        if (!com.yrnet.transfer.business.transfer.file.License.getPptLicense()) {
+        if (!com.yrnet.transfer.business.transfer.file.License.getPdfLicense()) {
             return size;
         }
         try {
@@ -35,7 +35,7 @@ public class PdfToPng {
             JpegDevice jpegDevice = new JpegDevice(resolution);
             for (int index=1;index<=pdfDocument.getPages().size();index++) {
                 // 输出路径
-                String path = inFile.substring(0,outFile.lastIndexOf(".")) + "/"+index+".png";
+                String path = inFile.substring(0,inFile.lastIndexOf(".")) + "_"+index+".png";
                 File file = new File(path);
                 size += file.length();
                 FileOutputStream fileOs = new FileOutputStream(file);

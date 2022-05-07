@@ -22,6 +22,7 @@ import com.yrnet.appweb.common.exception.DocumentException;
 import com.yrnet.appweb.common.http.TransferResponse;
 import com.yrnet.appweb.common.properties.ViewWebProperties;
 import com.yrnet.appweb.common.utils.DateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,11 +60,14 @@ public class ConvertServiceImpl extends ServiceImpl<ConvertLogMapper, ConvertLog
     @Override
     public List<ConvertLogResponse> queryLog(ConvertLogRequest dto) throws DocumentException {
         LambdaQueryWrapper<ConvertLog> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(ConvertLog::getUserOpenId,dto.getOpenId());
+        queryWrapper.eq(ConvertLog::getUserOpenId,dto.getOpenId()).isNotNull(ConvertLog::getNewFilePath);
         queryWrapper.orderByDesc(ConvertLog::getCreateTime);
         List<ConvertLog> logs = this.list(queryWrapper);
         WxUser user = wxUserServiceImpl.queryByOpenId(dto.getOpenId());
-        return this.returnFilList(logs,user);
+        if (user == null || logs.isEmpty()){
+            return new ArrayList<>();
+        }
+        return this.returnFileList(logs,user);
     }
 
     @Override
@@ -101,7 +105,7 @@ public class ConvertServiceImpl extends ServiceImpl<ConvertLogMapper, ConvertLog
             response.setFileName(tr.getFileName());
             response.setFileId(tr.getFileId());
             response.setFileSize(tr.getFileSize());
-            if (!this.isVipUser(bo.getOpenId())){
+            if (!vipInfoService.isVipUser(bo.getOpenId())){
                 ConvertFreeTrialRecord record = ConvertFreeTrialRecord.builder()
                         .setFilePath(log.getFilePath())
                         .setNewFilePath(log.getNewFilePath())
@@ -123,51 +127,34 @@ public class ConvertServiceImpl extends ServiceImpl<ConvertLogMapper, ConvertLog
         return count>0?false:true;
     }
 
-    @Override
-    public boolean vipIsExpired(String openId) throws DocumentException {
-        VipInfoResDto vipInf = vipInfoService.getVipInf(openId);
-        try {
-            Date expired =  DateUtil.stringToDate(vipInf.getExpireDate().concat("235959"),DateUtil.FULL_TIME_PATTERN);
-            Date current = new Date();
-            return current.after(expired);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isVipUser(String openId){
-        VipInfoResDto vipInf = vipInfoService.getVipInf(openId);
-        if (vipInf != null){
-            return true;
-        }
-        return false;
-    }
-
-
-    private List<ConvertLogResponse> returnFilList(List<ConvertLog> logs,WxUser user){
+    private List<ConvertLogResponse> returnFileList(List<ConvertLog> logs,WxUser user){
         List<ConvertLogResponse> response = new ArrayList<>();
         if(logs == null){
             return response;
         }
-        logs.forEach(l->{
-            List<String> paths = Arrays.asList(l.getNewFilePath().split(","));
+        for (ConvertLog l : logs){
+            if (StringUtils.isBlank(l.getNewFilePath())){
+                continue;
+            }
+            List<String> paths = Arrays.asList(l.getNewFilePath().trim().split(","));
             StringBuffer newFilePaths = new StringBuffer();
             paths.forEach(path->newFilePaths.append(viewWebProperties.getUrl_base()).append(path.substring(path.lastIndexOf("/"))).append(","));
-            response.add(ConvertLogResponse.builder()
-                            .allow(0)
-                            .createTime(l.getCreateTime())
-                            .fileId(l.getId())
-                            .url(newFilePaths.substring(0,newFilePaths.length() - 1))
-                            .useName(user.getWxUserName())
-                            .fileName(l.getFileName())
-                            .fileSize(l.getFileSize())
-                            .state(l.getState()
-                            ).build());
+                    try {
+                        response.add(ConvertLogResponse.builder()
+                                        .allow(0)
+                                        .createTime(l.getCreateTime())
+                                        .createTimeStr(DateUtil.getDateFormat(DateUtil.stringToDate(l.getCreateTime()+"",DateUtil.FULL_TIME_PATTERN),DateUtil.FULL_TIME_SPLIT_PATTERN2))
+                                        .fileId(l.getId())
+                                        .url(newFilePaths.substring(0,newFilePaths.length() - 1))
+                                        .useName(user.getWxUserName())
+                                        .fileName(l.getFileName())
+                                        .fileSize(l.getFileSize())
+                                        .state(l.getState()
+                                        ).build());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-        );
         return response;
     }
 }

@@ -9,6 +9,11 @@ spring:
   profiles:
     active: @profileActive@
 
+  # 设置文件可上传大小
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 500MB
   application:
     name: docapp
 

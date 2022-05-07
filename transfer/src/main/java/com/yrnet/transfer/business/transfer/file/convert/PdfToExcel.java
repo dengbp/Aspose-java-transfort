@@ -2,7 +2,6 @@ package com.yrnet.transfer.business.transfer.file.convert;
 
 import com.aspose.pdf.Document;
 import com.aspose.pdf.ExcelSaveOptions;
-import com.aspose.pdf.SaveFormat;
 import com.yrnet.transfer.business.transfer.file.Out;
 
 import java.io.File;
@@ -15,20 +14,23 @@ import java.io.File;
 public class PdfToExcel {
 
     public static long pdfToExcel(String inFile, String outFile) {
-        if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
+        if (!com.yrnet.transfer.business.transfer.file.License.getPdfLicense()) {
             return 0;
         }
         try {
+
             long old = System.currentTimeMillis();
             // Load source PDF file
             Document doc = new Document(inFile);
-            // Set Excel options这个option还不知怎么用
+// Set Excel options
             ExcelSaveOptions options = new ExcelSaveOptions();
-            // Set output format
-            // Set minimizing option
-            options.setMinimizeTheNumberOfWorksheets(true);
-            // Convert PDF to Excel XLSX
-            doc.save(outFile, SaveFormat.Excel);
+// Set output format
+            options.setFormat(ExcelSaveOptions.ExcelFormat.XLSX);
+// Convert PDF to XLSX
+            doc.save(outFile, options);
+
+
+
             long now = System.currentTimeMillis();
             Out.print(inFile, outFile, now, old);
             return new File(outFile).length();

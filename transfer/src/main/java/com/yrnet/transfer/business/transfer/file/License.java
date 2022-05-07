@@ -36,6 +36,21 @@ public class License {
         }
         return result;
     }
+
+    public static boolean getPdfLicense() {
+        boolean result = false;
+        try {
+            InputStream is = License.class.getResourceAsStream("/license.xml");
+            com.aspose.pdf.License aposeLic = new com.aspose.pdf.License();
+            aposeLic.setLicense(is);
+            result = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     public static boolean getPptLicense() {
         boolean result = false;
         try {

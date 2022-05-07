@@ -15,7 +15,7 @@ import java.io.File;
 public class PdfToPpt {
 
     public static long pdfToPpt(String inFile, String outFile) {
-        if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
+        if (!com.yrnet.transfer.business.transfer.file.License.getPdfLicense()) {
             return 0;
         }
         long old = System.currentTimeMillis();

@@ -1,11 +1,13 @@
 package com.yrnet.transfer.business.transfer.file.convert;
 
-import com.aspose.pdf.Document;
-import com.aspose.pdf.PdfSaveOptions;
+import com.aspose.words.Document;
+import com.aspose.words.ImportFormatMode;
+import com.aspose.words.SaveFormat;
 import com.yrnet.transfer.business.transfer.file.Out;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * @author dengbp
@@ -22,14 +24,19 @@ public class DocxToPdf {
         }
         try {
             long old = System.currentTimeMillis();
-            Document doc = new Document(inFile);
-            PdfSaveOptions options = new PdfSaveOptions();
-            doc.save(outFile, options);
-            long fileSize = new File(outFile).length();
+            File file = new File(outFile);
+            FileOutputStream os = new FileOutputStream(file);
+            com.aspose.words.Document doc = new com.aspose.words.Document(inFile);
+            com.aspose.words.Document tmp = new Document();
+            tmp.removeAllChildren();
+            tmp.appendDocument(doc, ImportFormatMode.USE_DESTINATION_STYLES);
+            System.out.println("开始解析word文档" + inFile);
+            doc.save(os, SaveFormat.PDF);
             long now = System.currentTimeMillis();
-            log.info("target file size:{}",fileSize);
+            log.info("target file size:{}",file.length());
+            os.close();
             Out.print(inFile, outFile, now, old);
-            return fileSize;
+            return file.length();
         } catch (Exception e) {
             log.error(inFile + "转换失败，请重试",e);
             return 0;

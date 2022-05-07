@@ -24,6 +24,10 @@ public class ConvertLogResponse implements Serializable {
      *  转换时间
      */
     private Long createTime;
+    /**
+     *  转换时间(前端显示)
+     */
+    private String createTimeStr;
 
     /**
      * 0:成功，1：失败

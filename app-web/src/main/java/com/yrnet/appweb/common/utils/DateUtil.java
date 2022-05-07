@@ -27,6 +27,7 @@ public class DateUtil {
     public static final String YYYY_MM_DD_PATTERN = "yyyyMMdd";
 
     public static final String FULL_TIME_SPLIT_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static final String FULL_TIME_SPLIT_PATTERN2 = "yyyy.MM.dd HH:mm:ss";
 
     public static final String CST_TIME_PATTERN = "EEE MMM dd HH:mm:ss zzz yyyy";
 

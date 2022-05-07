@@ -1,6 +1,5 @@
 package com.yrnet.transfer.business.transfer.file.convert;
 
-import com.aspose.pdf.SaveFormat;
 import com.aspose.words.Document;
 import com.aspose.words.DocumentBuilder;
 import com.yrnet.transfer.business.transfer.file.Out;
@@ -17,7 +16,7 @@ import java.util.List;
 public class JpgToPdf {
 
     public static long jpgToPdf(List<String> inFile, String outFile) {
-        if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
+        if (!com.yrnet.transfer.business.transfer.file.License.getWordLicense()) {
             return 0;
         }
         try {
@@ -30,7 +29,7 @@ public class JpgToPdf {
                 // 插入一个段落分隔符以避免重叠图像。
                 builder.writeln();
             }
-            doc.save(outFile, SaveFormat.Pdf);
+            doc.save(outFile);
             long now = System.currentTimeMillis();
             Out.print(inFile.get(0), outFile, now, old);
             return new File(outFile).length();
