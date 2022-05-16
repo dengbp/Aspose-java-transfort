@@ -48,5 +48,7 @@ public interface IVipInfoService extends IService<VipInfo> {
 
     boolean isVipUser(String openId)throws DocumentException;
 
+    boolean setEmail(String openId,String email)throws DocumentException;
+
 
 }

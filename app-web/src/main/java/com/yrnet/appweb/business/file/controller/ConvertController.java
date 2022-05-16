@@ -84,14 +84,15 @@ public class ConvertController {
         }else if (!convertService.canFreeTrial(request.getOpenId())){
             return response.fail().message("请先开通会员(苹果手机暂不支持，请用安卓手机开通或用PC端开通后使用)");
         }
-        return response.message("请求处理成功").data(convertService.transfer(
+        new Thread(()->convertService.transfer(
                 FileConvertBo.builder()
                         .files(files)
                         .file(files.get(0))
                         .openId(request.getOpenId())
                         .toType(request.getToType())
-                        .build())
-        );
+                        .build()
+        )).start();
+        return response.success().message("文件转换需要些时间,稍后请到“我的->转换记录或邮箱去查收”");
     }
 
 
@@ -151,10 +152,13 @@ public class ConvertController {
         ConvertType type = ConvertType.getByCode((char)toType);
         switch (type){
             case word_to_pdf:
-                if (StringUtils.equalsIgnoreCase(suffix, FileSuffixConstant.DOC)){
+                if (StringUtils.containsIgnoreCase(FileSuffixConstant.WORD_SUF,suffix)){
                     response.success();
                 }
-                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOCX)){
+                break;
+                //该类判断，前端升级后可删除
+            case docx_to_pdf:
+                if (StringUtils.containsIgnoreCase(FileSuffixConstant.WORD_SUF,suffix)){
                     response.success();
                 }
                 break;
@@ -179,7 +183,7 @@ public class ConvertController {
                 }
                 break;
             case ppt_to_pdf:
-                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.PDF)){
+                if (StringUtils.containsIgnoreCase(FileSuffixConstant.PPT_SUF,suffix)){
                     response.success();
                 }
                 break;
@@ -203,23 +207,13 @@ public class ConvertController {
                     response.success();
                 }
                 break;
-            case docx_to_pdf:
-                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOCX)){
-                    response.success();
-                }
-                break;
             case odt_to_pdf:
                 if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.ODT)){
                     response.success();
                 }
                 break;
-            case doc_to_pdf:
-                if (StringUtils.equalsIgnoreCase(suffix,FileSuffixConstant.DOC)){
-                    response.success();
-                }
-                break;
             default:
-                response.message("格式不匹配！");
+                response.message("暂不支持该格式文件！");
                 log.warn("no type match!");
                 break;
         }

@@ -147,7 +147,7 @@ public class ConvertServiceImpl extends ServiceImpl<ConvertLogMapper, ConvertLog
                                         .fileId(l.getId())
                                         .url(newFilePaths.substring(0,newFilePaths.length() - 1))
                                         .useName(user.getWxUserName())
-                                        .fileName(l.getFileName())
+                                        .fileName(StringUtils.isBlank(l.getNewFileName())?l.getFileName():l.getNewFileName())
                                         .fileSize(l.getFileSize())
                                         .state(l.getState()
                                         ).build());

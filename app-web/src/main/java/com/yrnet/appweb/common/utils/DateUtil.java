@@ -165,6 +165,16 @@ public class DateUtil {
     }
 
 
+
+    /**
+     * Description 当前时间加N个月后
+     * @param inputDate
+ * @param number
+     * @return java.lang.Long
+     * @Author dengbp
+     * @Date 10:09 AM 5/14/22
+     **/
+
     public static Long  getAfterMonth(Long inputDate,int number) {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_PATTERN);

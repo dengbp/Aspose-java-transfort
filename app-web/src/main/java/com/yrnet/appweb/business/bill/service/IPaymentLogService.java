@@ -16,6 +16,8 @@ import java.util.Map;
  * @author dengbp
  */
 public interface IPaymentLogService extends IService<PaymentLog> {
+
+
     Map<String, Object> wxPayment(PayMentReqDto reqDto) throws Exception;
 
     String wxNotify(HttpServletRequest request, HttpServletResponse response) throws Exception;

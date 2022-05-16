@@ -1,6 +1,7 @@
 package com.yrnet.appweb.business.custom.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.yrnet.appweb.business.bill.dto.VipInfoResDto;
 import com.yrnet.appweb.business.bill.entity.PlanService;
 import com.yrnet.appweb.business.bill.service.IPlanServiceService;
@@ -76,6 +77,15 @@ public class VipInfoServiceImpl extends ServiceImpl<VipInfoMapper, VipInfo> impl
     public boolean isVipUser(String openId){
         VipInfoResDto vipInf = this.getVipInf(openId);
         if (vipInf != null){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean setEmail(String openId, String email) throws DocumentException {
+        if (this.count(new LambdaQueryWrapper<VipInfo>().eq(VipInfo::getUserId,openId))>0){
+            this.update(new LambdaUpdateWrapper<VipInfo>().set(VipInfo::getEmail,email).eq(VipInfo::getUserId,openId));
             return true;
         }
         return false;

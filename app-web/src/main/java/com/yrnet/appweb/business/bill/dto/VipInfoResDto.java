@@ -18,4 +18,6 @@ public class VipInfoResDto {
 
     /** 到期时间(yyyyMMdd)，显示要转成天数 */
     private String expireDate;
+
+    private String email;
 }

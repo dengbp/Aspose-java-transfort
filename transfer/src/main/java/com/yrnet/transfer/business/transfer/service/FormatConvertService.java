@@ -97,7 +97,7 @@ public class FormatConvertService {
                 break;
             case docx_to_pdf:
                 outFile = outFiles.get(0).concat(FileSuffixConstant.PDF);
-                fileSize =  DocxToPdf.wordToPdf(transferReq.getFilePath(),outFile);
+                fileSize =  WordToPdf.wordToPdf(transferReq.getFilePath(),outFile);
                 successResponse(response,fileName.concat(FileSuffixConstant.PDF),outFile,fileSize);
                 break;
             case odt_to_pdf:

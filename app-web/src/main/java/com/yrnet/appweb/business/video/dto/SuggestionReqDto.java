@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 public class SuggestionReqDto extends Token {
 
     @NotNull
-    private String userId;
+    private String userOpenId;
 
     /**
      * 建议描述

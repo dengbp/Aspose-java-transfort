@@ -45,10 +45,16 @@ public class VipInfo implements Serializable {
      */
     private Long createTime;
 
+    /**
+     * 会员用户邮件地址，用于发送转换后的文件地址
+     */
+    private String email;
+
 
 
     public VipInfoResDto toResponse(VipInfoResDto vipInfo){
         vipInfo.setState(state);
+        vipInfo.setEmail(email);
         vipInfo.setExpireDate(expireDate.toString());
         return vipInfo;
     }

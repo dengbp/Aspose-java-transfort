@@ -23,7 +23,6 @@ public class WordToPdf {
             return 0;
         }
         try {
-
             long old = System.currentTimeMillis();
             File file = new File(outFile);
             FileOutputStream os = new FileOutputStream(file);

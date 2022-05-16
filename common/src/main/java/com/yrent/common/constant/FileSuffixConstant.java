@@ -19,6 +19,8 @@ public   final class FileSuffixConstant {
 
     public static String PIC_ALL = ".jpg|.jpeg|.png|.bmp|.gif|.tiff|.exif|.wbmp|.mbm";
     public static String EXCEL_SUF = ".xlsx|.xls";
+    public static String PPT_SUF = ".pptx|.ppt";
+    public static String WORD_SUF = ".doc|.docx";
 
 
 }

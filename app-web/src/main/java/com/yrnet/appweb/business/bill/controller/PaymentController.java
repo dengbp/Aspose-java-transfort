@@ -34,18 +34,17 @@ public class PaymentController {
     @ControllerEndpoint(operation = "支付接口", exceptionMessage = "支付失败")
     @Log("支付接口")
     public ViewWebResponse pay(@RequestBody PayMentReqDto reqDto) {
-        return new ViewWebResponse().fail().message("邀请成员公测中,过两天后再充值");
-   //     try {
-//            Map<String, Object> restMap = iPaymentLogService.wxPayment(reqDto);
-//            if (restMap != null) {
-//                return new ViewWebResponse().success().data(restMap);
-//            } else {
-//                return new ViewWebResponse().fail();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return new ViewWebResponse().fail();
+        try {
+            Map<String, Object> restMap = iPaymentLogService.wxPayment(reqDto);
+            if (restMap != null) {
+                return new ViewWebResponse().success().data(restMap);
+            } else {
+                return new ViewWebResponse().fail();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ViewWebResponse().fail();
     }
 
     /**
