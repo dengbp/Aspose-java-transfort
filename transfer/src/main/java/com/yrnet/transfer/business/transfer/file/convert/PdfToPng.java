@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Slf4j
 public class PdfToPng {
-    public static long pdfToPng(String inFile, List<String> outFile) {
+    public static long pdfToPng(String inFile, List<String> outFile) throws Exception {
         long size = 0;
         if (!com.yrnet.transfer.business.transfer.file.License.getPdfLicense()) {
             return size;
@@ -48,7 +48,7 @@ public class PdfToPng {
             return size;
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return size;
+            throw new Exception(e.getMessage());
         }
     }
 }

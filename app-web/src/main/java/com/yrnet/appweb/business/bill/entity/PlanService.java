@@ -46,5 +46,8 @@ public class PlanService implements Serializable {
     /** 0非默认，1默认 */
     private Integer checked;
 
+    /** 套餐特性描述 */
+    private String descs;
+
 
 }

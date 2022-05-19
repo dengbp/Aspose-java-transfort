@@ -72,7 +72,7 @@ public class ViewWebStartedUpRunner implements ApplicationRunner {
             if (StringUtils.isNotBlank(loginUrl)) {
                 url += loginUrl;
             }
-            log.info("vie-web 系统启动完毕，地址：{}", url);
+            log.info("app-web-api 系统启动完毕，地址：{}", url);
             boolean auto = yinXXProperties.isAutoOpenBrowser();
             String[] autoEnv = yinXXProperties.getAutoOpenBrowserEnv();
             if (auto && ArrayUtils.contains(autoEnv, active)) {

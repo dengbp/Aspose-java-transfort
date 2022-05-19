@@ -19,12 +19,9 @@ public class PdfToPpt {
             return 0;
         }
         long old = System.currentTimeMillis();
-        // Load PDF document
         Document pdfDocument = new Document(inFile);
-        // Set PPTX save options
         PptxSaveOptions pptxOptions = new PptxSaveOptions();
         pptxOptions.setExtractOcrSublayerOnly(true);
-        // Save PDF as PPTX
         pdfDocument.save(outFile, pptxOptions);
         long now = System.currentTimeMillis();
         Out.print(inFile, outFile, now, old);

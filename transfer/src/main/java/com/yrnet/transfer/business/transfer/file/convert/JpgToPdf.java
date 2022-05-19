@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class JpgToPdf {
 
-    public static long jpgToPdf(List<String> inFile, String outFile) {
+    public static long jpgToPdf(List<String> inFile, String outFile) throws Exception {
         if (!com.yrnet.transfer.business.transfer.file.License.getWordLicense()) {
             return 0;
         }
@@ -35,7 +35,7 @@ public class JpgToPdf {
             return new File(outFile).length();
         }catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            throw new Exception(e.getMessage());
         }
 
     }

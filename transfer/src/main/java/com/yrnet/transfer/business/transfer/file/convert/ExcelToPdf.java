@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
  **/
 public class ExcelToPdf {
 
-    public static long excelToPdf(String inFile, String outFile) {
+    public static long excelToPdf(String inFile, String outFile) throws Exception {
         if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
             return 0;
         }
@@ -33,7 +33,7 @@ public class ExcelToPdf {
             return pdfFile.length();
         }catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            throw new Exception(e.getMessage());
         }
 
     }

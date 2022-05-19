@@ -4,7 +4,6 @@ import com.yrnet.appweb.business.file.entity.ConvertLog;
 import com.yrnet.appweb.common.utils.DateUtil;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
@@ -32,6 +31,8 @@ public class FileConvertBo {
         String path = file.getAbsolutePath();
         log.setFileSuffix(path.substring(path.lastIndexOf(".")));
         log.setToType(toType);
+        //转换中
+        log.setState(-1);
         log.setCreateTime(Long.parseLong(DateUtil.current_yyyyMMddHHmmss()));
         return log;
     }

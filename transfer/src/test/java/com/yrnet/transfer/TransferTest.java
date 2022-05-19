@@ -44,7 +44,7 @@ public class TransferTest extends TestCase {
 
 
 
-    public void testPdfToExcel(){
+    public void testPdfToExcel() throws Exception {
         String inFile = "/Users/dengbp/Downloads/doc-sys/transfer/pdf/模板-ENG4-old.pdf";
         String outFile = "/Users/dengbp/Downloads/tmp_target_ok22.xlsx";
         long  fileSize = PdfToExcel.pdfToExcel(inFile,outFile);
@@ -60,7 +60,7 @@ public class TransferTest extends TestCase {
         PdfToPpt.pdfToPpt(inFile,outFile);
     }
 
-    public void testExcelToPdf(){
+    public void testExcelToPdf() throws Exception {
 
         String inFile = "/Users/dengbp/Downloads/交接资源(汪三丁院红).xlsx";
         String outFile = "/Users/dengbp/Downloads/tmp_source.pdf";
@@ -70,7 +70,7 @@ public class TransferTest extends TestCase {
 
 
 
-    public void testPdfToPng(){
+    public void testPdfToPng() throws Exception {
 
         String inFile = "/Users/dengbp/Downloads/tmp_source.pdf";
 
@@ -80,7 +80,7 @@ public class TransferTest extends TestCase {
 
 
 
-    public void testPdfToJpg(){
+    public void testPdfToJpg() throws Exception {
 
         String inFile = "/Users/dengbp/Downloads/tmp_source.pdf";
         List<String> outJpg = new ArrayList<>();
@@ -88,7 +88,7 @@ public class TransferTest extends TestCase {
     }
 
 
-    public void testPicToPdf(){
+    public void testPicToPdf() throws Exception {
         List<String> inFile = new ArrayList<>();
         inFile.add("/Users/dengbp/Downloads/11111.jpg");
         inFile.add("/Users/dengbp/Downloads/tmp_source_1.png");
@@ -96,7 +96,7 @@ public class TransferTest extends TestCase {
         JpgToPdf.jpgToPdf(inFile,outFile);
     }
 
-    public void testWordToPdf(){
+    public void testWordToPdf() throws Exception {
         String path2 = "/Users/dengbp/Downloads/doc-sys/transfer/模板-LL-SP-DIS30216.doc";
         String fileName2 = "模板-LL-SP-DIS30217.pdf";
         WordToPdf.wordToPdf(path2, "/Users/dengbp/Downloads/doc-sys/transfer/pdf/"+fileName2);

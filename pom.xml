@@ -29,6 +29,7 @@
         <module>sso-server</module>
         <!-- 用户、权限、菜单管理模块 -->
         <module>base-admin</module>
+        <module>pc-web</module>
     </modules>
 
 

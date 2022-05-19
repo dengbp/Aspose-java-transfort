@@ -75,7 +75,7 @@ public class ConvertLog implements Serializable {
     private Long createTime;
 
     /**
-     * 转换状态 转换状态 0成功 1处理中 2失败
+     * 转换状态 转换状态 -1：转换中 0:成功，1：失败
      */
     private Integer state;
 

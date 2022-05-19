@@ -2,10 +2,6 @@ package com.yrnet.appweb;
 
 import junit.framework.TestCase;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 /**
  * @author dengbp
  * @ClassName SufixxTest

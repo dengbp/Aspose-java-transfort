@@ -1,5 +1,6 @@
 package com.yrnet.transfer.business.transfer.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yrnet.transfer.annotion.Log;
 import com.yrnet.transfer.business.transfer.dto.TransferRequest;
 import com.yrnet.transfer.business.transfer.service.FormatConvertService;
@@ -32,6 +33,9 @@ public class FormatConvertController {
     @PostMapping("exe")
     @ResponseBody
     public TransferResponse enforce(@RequestBody @Valid TransferRequest transferReq){
-        return new TransferResponse().success().data(formatConvertService.convert(transferReq)).message("success");
+        log.info("transfer request params:{}", JSONObject.toJSONString(transferReq));
+        //支持同步返回
+        new Thread(()->formatConvertService.convert(transferReq)).start();
+        return new TransferResponse().success().message("success");
     }
 }

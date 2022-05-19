@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
  **/
 public class PptToPdf {
 
-    public static long pptToPdf(String inFile, String outFile) {
+    public static long pptToPdf(String inFile, String outFile) throws Exception {
         if (!com.yrnet.transfer.business.transfer.file.License.getPptLicense()) {
             return 0;
         }
@@ -31,7 +31,7 @@ public class PptToPdf {
             return pdfFile.length();
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            throw new Exception(e.getMessage());
         }
     }
 }

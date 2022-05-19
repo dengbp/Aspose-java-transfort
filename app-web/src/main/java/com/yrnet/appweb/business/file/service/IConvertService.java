@@ -6,8 +6,6 @@ import com.yrnet.appweb.business.file.dto.ConvertLogResponse;
 import com.yrnet.appweb.business.file.entity.ConvertLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yrnet.appweb.common.exception.DocumentException;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

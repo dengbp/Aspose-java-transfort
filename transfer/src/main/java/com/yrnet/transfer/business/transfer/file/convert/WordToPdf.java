@@ -18,7 +18,7 @@ import java.io.FileOutputStream;
 public class WordToPdf {
 
 
-    public static long wordToPdf(String inFile, String outFile) {
+    public static long wordToPdf(String inFile, String outFile) throws Exception {
         if (!com.yrnet.transfer.business.transfer.file.License.getWordLicense()) {
             return 0;
         }
@@ -39,7 +39,7 @@ public class WordToPdf {
             return file.length();
         } catch (Exception e) {
             log.error(inFile + "转换失败，请重试",e);
-            return 0;
+            throw new Exception(e.getMessage());
         }
     }
 }

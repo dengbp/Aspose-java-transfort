@@ -23,17 +23,17 @@ public class CodeGenerator {
     private static String projectName = "transfer";
 
     // 数据库 URL
-    private static final String URL = "jdbc:mysql://192.168.1.12:3306/segi_cmdb?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String URL = "jdbc:mysql://124.220.16.138:3306/yr_document?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     // 数据库驱动
     private static final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
     // 数据库用户名
-    private static final String USERNAME = "rentApp";
+    private static final String USERNAME = "root";
     // 数据库密码
-    private static final String PASSWORD = "abcdefg123";
+    private static final String PASSWORD = "QAZxsw123!";
     // @author 值
     private static final String AUTHOR = "dengbp";
     // 包的基础路径
-    private static final String BASE_PACKAGE_URL = "com.segi.dbmserver";
+    private static final String BASE_PACKAGE_URL = "com.yrnet.transfer.business";
     // xml 文件模板
     private static final String XML_MAPPER_TEMPLATE_PATH = "generator/templates/mapper.xml";
     private static final String XML_MAPPER_TEMPLATE_PATH_CUSTOM = "generator/templates/mapper.xml.ftl";
@@ -49,9 +49,8 @@ public class CodeGenerator {
     private static final String CONTROLLER_TEMPLATE_PATH = "generator/templates/controller.java";
 
     public static void main(String[] args) {
-
         AutoGenerator generator = new AutoGenerator();
-        //** 全局配置 *//*
+        /** 全局配置 */
         GlobalConfig globalConfig = new GlobalConfig();
         String projectPath = System.getProperty("user.dir")+"/"+projectName;
         globalConfig.setOutputDir(projectPath + "/src/main/java");
@@ -60,7 +59,7 @@ public class CodeGenerator {
         globalConfig.setFileOverride(false);
         generator.setGlobalConfig(globalConfig);
 
-        //**  数据源配置 *//*
+        /**  数据源配置 */
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         dataSourceConfig.setUrl(URL);
         dataSourceConfig.setDriverName(DRIVER_NAME);
@@ -68,13 +67,13 @@ public class CodeGenerator {
         dataSourceConfig.setPassword(PASSWORD);
         generator.setDataSource(dataSourceConfig);
 
-        //**  包配置 *//*
+        /**  包配置 */
         PackageConfig packageConfig = new PackageConfig();
         packageConfig.setModuleName(scanner("模块名"));
         packageConfig.setParent(BASE_PACKAGE_URL);
         generator.setPackageInfo(packageConfig);
 
-        //** 配置自定义代码模板 *//*
+        /** 配置自定义代码模板 */
         TemplateConfig templateConfig = new TemplateConfig();
         templateConfig.setXml(XML_MAPPER_TEMPLATE_PATH);
         templateConfig.setMapper(MAPPER_TEMPLATE_PATH);
@@ -84,7 +83,7 @@ public class CodeGenerator {
         templateConfig.setController(CONTROLLER_TEMPLATE_PATH);
         generator.setTemplate(templateConfig);
 
-        //** 自定义配置 *//*
+        /** 自定义配置 */
         InjectionConfig cfg = new InjectionConfig() {
             @Override
             public void initMap() {
@@ -94,9 +93,9 @@ public class CodeGenerator {
                 this.setMap(map);
             }
         };
-        //** 自定义输出配置 *//*
+        /** 自定义输出配置 */
         List<FileOutConfig> focList = new ArrayList<>();
-        //** 自定义配置会被优先输出 *//*
+        /** 自定义配置会被优先输出 */
         focList.add(new FileOutConfig(XML_MAPPER_TEMPLATE_PATH_CUSTOM) {
 
             @Override
@@ -107,7 +106,7 @@ public class CodeGenerator {
         });
         cfg.setFileOutConfigList(focList);
 
-        //** 策略配置 *//*
+        /** 策略配置 */
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);

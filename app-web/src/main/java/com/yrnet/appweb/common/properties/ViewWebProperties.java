@@ -31,4 +31,6 @@ public class ViewWebProperties {
     private Integer share_download_limit;
 
     private String app_moment_url;
+
+
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class PdfToJpg {
 
-    public static long pdfToJpg(String inFile, List<String> outFile) {
+    public static long pdfToJpg(String inFile, List<String> outFile) throws Exception {
         long size = 0;
         if (!com.yrnet.transfer.business.transfer.file.License.getPdfLicense()) {
             return size;
@@ -50,7 +50,7 @@ public class PdfToJpg {
             return size;
         }catch (Exception e){
             log.error(e.getMessage(),e);
-            return size;
+            throw new Exception(e.getMessage());
         }
     }
 }

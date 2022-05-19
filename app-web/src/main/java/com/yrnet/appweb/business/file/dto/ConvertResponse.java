@@ -24,7 +24,7 @@ public class ConvertResponse {
      */
     private Long fileSize;
 
-    /** 转换状态 0成功 1失败 */
+    /** 转换状态 -1：转换中 0:成功，1：失败 */
     private Integer state;
 
 }
