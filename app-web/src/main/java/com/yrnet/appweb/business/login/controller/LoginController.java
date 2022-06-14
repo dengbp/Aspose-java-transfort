@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter;
  * @date 2020/11/29 2:21 下午
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("ios/user")
 @Slf4j
 public class LoginController {
 

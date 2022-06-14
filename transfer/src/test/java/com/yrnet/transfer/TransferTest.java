@@ -54,16 +54,16 @@ public class TransferTest extends TestCase {
 
     public void testPdfToPpt(){
 
-        String inFile = "/Users/dengbp/Downloads/JD数科 电子合同中心-系统架构.pdf";
-        String outFile = "/Users/dengbp/Downloads/JD数科 电子合同中心-系统架构.pdf.ppt";
+        String inFile = "/Users/dengbp/Downloads/商城微服务系统架构.pdf";
+        String outFile = "/Users/dengbp/Downloads/商城微服务系统架构.ppt";
 
         PdfToPpt.pdfToPpt(inFile,outFile);
     }
 
     public void testExcelToPdf() throws Exception {
 
-        String inFile = "/Users/dengbp/Downloads/交接资源(汪三丁院红).xlsx";
-        String outFile = "/Users/dengbp/Downloads/tmp_source.pdf";
+        String inFile = "/Users/dengbp/Downloads/文档临时/练习题（单选）.xls";
+        String outFile = "/Users/dengbp/Downloads/练习题.pdf";
 
         ExcelToPdf.excelToPdf(inFile,outFile);
     }
