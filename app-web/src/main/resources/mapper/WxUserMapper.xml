@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yrnet.appweb.business.login.mapper.WxUserMapper">
-
-
-    <select id="queryByOpenId" resultType="com.yrnet.appweb.business.login.entity.WxUser">
-        select * from wx_user where WX_OPEN_ID = #{openId};
-    </select>
-</mapper>
