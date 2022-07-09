@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yrnet.sso.server.dao.UserMapper">
-
-    <select id="queryRoleIdByUserId" resultType="java.lang.String">
-        select role_id from cmdb_user_role_rel where user_id = #{userId}
-    </select>
-
-</mapper>
