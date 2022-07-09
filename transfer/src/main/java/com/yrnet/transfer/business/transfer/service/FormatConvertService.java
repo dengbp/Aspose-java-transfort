@@ -40,7 +40,7 @@ public class FormatConvertService {
         List<String> inFiles = Arrays.asList(transferReq.getFilePath().split(","));
         long fileSize = 0;
         try{
-            //目标文件(包含路径，不含文件后缀)
+            /** 目标文件(包含路径，不含文件后缀) */
             final List<String> outFiles = new ArrayList<>();
             inFiles.forEach(inFile->outFiles.add(inFile.substring(0,inFile.lastIndexOf("."))));
             String outFile;

@@ -12,7 +12,7 @@ import java.io.File;
  **/
 public class ExcelToPic {
 
-    public static long excelToPdf(String inFile, String outFile) throws Exception {
+    public static long excelToPic(String inFile, String outFile) throws Exception {
         if (!com.yrnet.transfer.business.transfer.file.License.getExcelLicense()) {
             return 0;
         }
@@ -33,7 +33,6 @@ public class ExcelToPic {
             e.printStackTrace();
             throw new Exception(e.getMessage());
         }
-
     }
 
 }

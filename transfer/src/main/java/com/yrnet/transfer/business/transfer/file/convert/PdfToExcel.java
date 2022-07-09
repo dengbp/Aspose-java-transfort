@@ -18,27 +18,17 @@ public class PdfToExcel {
             return 0;
         }
         try {
-
             long old = System.currentTimeMillis();
-            // Load source PDF file
             Document doc = new Document(inFile);
-// Set Excel options
             ExcelSaveOptions options = new ExcelSaveOptions();
-// Set output format
             options.setFormat(ExcelSaveOptions.ExcelFormat.XLSX);
-// Convert PDF to XLSX
             doc.save(outFile, options);
-
-
-
-            long now = System.currentTimeMillis();
-            Out.print(inFile, outFile, now, old);
+            Out.print(inFile, outFile, System.currentTimeMillis(), old);
             return new File(outFile).length();
         }catch (Exception e) {
             e.printStackTrace();
             throw new Exception(e.getMessage());
         }
-
     }
 
 }

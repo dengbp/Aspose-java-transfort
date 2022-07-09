@@ -26,15 +26,9 @@ public class PdfToPng {
         try {
             long old = System.currentTimeMillis();
             Document pdfDocument = new Document(inFile);
-            //图片宽度：800
-            //图片高度：100
-            // 分辨率 960
-            //Quality [0-100] 最大100
-            //例： new JpegDevice(800, 1000, resolution, 90);
             Resolution resolution = new Resolution(960);
             JpegDevice jpegDevice = new JpegDevice(resolution);
             for (int index=1;index<=pdfDocument.getPages().size();index++) {
-                // 输出路径
                 String path = inFile.substring(0,inFile.lastIndexOf(".")) + "_"+index+".png";
                 File file = new File(path);
                 size += file.length();
